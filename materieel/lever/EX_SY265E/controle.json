@@ -1,0 +1,618 @@
+{
+  "code": "EX_SY265E",
+  "resultaten": [
+    {
+      "groep": "manifest",
+      "status": "OK",
+      "tekst": "alle sjabloonsleutels aanwezig"
+    },
+    {
+      "groep": "manifest",
+      "status": "OK",
+      "tekst": "bibliotheek_csv: EX_SY265E/model.glb;0;1;Graafmachine"
+    },
+    {
+      "groep": "hiërarchie",
+      "status": "OK",
+      "tekst": "24 nodes, parent-child gelijk aan manifest"
+    },
+    {
+      "groep": "hiërarchie",
+      "status": "OK",
+      "tekst": "rigketen Bovenwagen → Giek"
+    },
+    {
+      "groep": "hiërarchie",
+      "status": "OK",
+      "tekst": "rigketen Giek → Stick"
+    },
+    {
+      "groep": "hiërarchie",
+      "status": "OK",
+      "tekst": "rigketen Stick → Bak"
+    },
+    {
+      "groep": "bevroren",
+      "status": "OK",
+      "tekst": "alle nodes schaal 1; rotatie alleen op gerichte cilinderhelften"
+    },
+    {
+      "groep": "namen",
+      "status": "OK",
+      "tekst": "alle namen uniek"
+    },
+    {
+      "groep": "namen",
+      "status": "OK",
+      "tekst": "rignaam Bovenwagen aanwezig"
+    },
+    {
+      "groep": "namen",
+      "status": "OK",
+      "tekst": "rignaam Giek aanwezig"
+    },
+    {
+      "groep": "namen",
+      "status": "OK",
+      "tekst": "rignaam Stick aanwezig"
+    },
+    {
+      "groep": "namen",
+      "status": "OK",
+      "tekst": "rignaam Bak aanwezig"
+    },
+    {
+      "groep": "afmetingen",
+      "status": "OK",
+      "tekst": "bbox breedte(X) 3.190 × hoogte(Y) 5.888 × lengte(Z) 10.683 m"
+    },
+    {
+      "groep": "afmetingen",
+      "status": "OK",
+      "tekst": "manifest-afmetingen wijken max 0.000 m af"
+    },
+    {
+      "groep": "afmetingen",
+      "status": "OK",
+      "tekst": "breedte_m model 3.190 m, datasheet 3.190 m (+0.0%)"
+    },
+    {
+      "groep": "nulpunt",
+      "status": "OK",
+      "tekst": "grond van EX_SY265E_Onderwagen: Y = 0.0000 m"
+    },
+    {
+      "groep": "nulpunt",
+      "status": "OK",
+      "tekst": "midden EX_SY265E_Onderwagen op X,Z = [0.0, 0.0]"
+    },
+    {
+      "groep": "voorkant",
+      "status": "OK",
+      "tekst": "voorkant -Z (afgeleid van Giek); conventie -Z"
+    },
+    {
+      "groep": "referentie",
+      "status": "OK",
+      "tekst": "voorkant -Z gelijk aan A40G.glb"
+    },
+    {
+      "groep": "referentie",
+      "status": "OK",
+      "tekst": "voorkant -Z gelijk aan Cat336E_LongReach.glb"
+    },
+    {
+      "groep": "referentie",
+      "status": "OK",
+      "tekst": "opbouw t.o.v. Cat336E_LongReach.glb: 18 gedeelde nodes hangen onder dezelfde parent"
+    },
+    {
+      "groep": "polygonen",
+      "status": "OK",
+      "tekst": "3444 driehoeken (doel ≤ 50000)"
+    },
+    {
+      "groep": "normalen",
+      "status": "OK",
+      "tekst": "alle primitieven hebben eenheidsnormalen, consistent met de winding"
+    },
+    {
+      "groep": "faces",
+      "status": "OK",
+      "tekst": "alle meshes gesloten (geen open randen)"
+    },
+    {
+      "groep": "texturen",
+      "status": "OK",
+      "tekst": "geen texturen gebruikt"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "Kettingwiel_L: draaipunt [-0.925, 0.402, 1.916] (= manifest, op de eigen geometrie)"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "Leiwiel_L: draaipunt [-0.925, 0.402, -1.916] (= manifest, op de eigen geometrie)"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "Kettingwiel_R: draaipunt [0.925, 0.402, 1.916] (= manifest, op de eigen geometrie)"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "Leiwiel_R: draaipunt [0.925, 0.402, -1.916] (= manifest, op de eigen geometrie)"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "Bovenwagen: draaipunt [0.0, 0.0, 0.0] (= manifest, op de eigen geometrie)"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "Giek: draaipunt [0.15, 2.05, -0.35] (= manifest, op de eigen geometrie)"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "Stick: draaipunt [0.15, 5.0, -5.46] (= manifest, op de eigen geometrie)"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "Bak: draaipunt [0.15, 2.228, -6.468] (= manifest, op de eigen geometrie)"
+    },
+    {
+      "groep": "extras",
+      "status": "OK",
+      "tekst": "Kettingwiel_L: stralen aanwezig"
+    },
+    {
+      "groep": "extras",
+      "status": "OK",
+      "tekst": "Leiwiel_L: stralen aanwezig"
+    },
+    {
+      "groep": "extras",
+      "status": "OK",
+      "tekst": "Kettingwiel_R: stralen aanwezig"
+    },
+    {
+      "groep": "extras",
+      "status": "OK",
+      "tekst": "Leiwiel_R: stralen aanwezig"
+    },
+    {
+      "groep": "extras",
+      "status": "OK",
+      "tekst": "8 joints met draaias/min_hoek_graden/max_hoek_graden in node-extras = manifest"
+    },
+    {
+      "groep": "cilinders",
+      "status": "OK",
+      "tekst": "Giekcilinder_L: richt op elkaars pen, penafstand 2.743 m, slag via Giek binnen min..max"
+    },
+    {
+      "groep": "cilinders",
+      "status": "OK",
+      "tekst": "Giekcilinder_R: richt op elkaars pen, penafstand 2.743 m, slag via Giek binnen min..max"
+    },
+    {
+      "groep": "cilinders",
+      "status": "OK",
+      "tekst": "Stickcilinder: richt op elkaars pen, penafstand 3.612 m, slag via Stick binnen min..max"
+    },
+    {
+      "groep": "cilinders",
+      "status": "OK",
+      "tekst": "Bakcilinder: richt op elkaars pen, penafstand 2.480 m, slag via Bak binnen min..max"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "20 node-paren raken elkaar in ruststand (pennen, bokken, cilinders); doorsnijding = nieuw contact > 1 cm of bestaand contact > 5 cm dieper"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "Kettingwiel_L: geen nieuwe doorsnijding op min -180 / max 180; positief = n.v.t. (wiel)"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "Leiwiel_L: geen nieuwe doorsnijding op min -180 / max 180; positief = n.v.t. (wiel)"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "Kettingwiel_R: geen nieuwe doorsnijding op min -180 / max 180; positief = n.v.t. (wiel)"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "Leiwiel_R: geen nieuwe doorsnijding op min -180 / max 180; positief = n.v.t. (wiel)"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "Bovenwagen: geen nieuwe doorsnijding op min -180 / max 180; positief = links"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "Giek: geen nieuwe doorsnijding op min -77.0 / max 25.0; positief = heffen"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "Stick: geen nieuwe doorsnijding op min -55 / max 80; positief = heffen"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "Bak: geen nieuwe doorsnijding op min -50 / max 95; positief = bak openen (lossen)"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "geen vervorming mogelijk: alle nodes rigide (schaal 1, geen skinning)"
+    },
+    {
+      "groep": "werkbereik",
+      "status": "OK",
+      "tekst": "max_graafdiepte_m: model 6.71 m, datasheet 6.71 m (+0.1%)"
+    },
+    {
+      "groep": "werkbereik",
+      "status": "OK",
+      "tekst": "max_graafhoogte_m: model 9.75 m, datasheet 9.74 m (+0.0%)"
+    },
+    {
+      "groep": "werkbereik",
+      "status": "OK",
+      "tekst": "max_reikwijdte_grond_m: model 10.26 m, datasheet 10.22 m (+0.3%)"
+    },
+    {
+      "groep": "animatie",
+      "status": "OK",
+      "tekst": "test_animatie.glb: per joint 0 → min → max → 0, cilinders mee gericht, bakkoppeling opgelost (32 s)"
+    }
+  ],
+  "joints": [
+    {
+      "naam": "Kettingwiel_L",
+      "as": "X",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ],
+      "positief": "n.v.t. (wiel)",
+      "betekenis": "machine rijdt achteruit",
+      "min": {
+        "hoek": -180,
+        "zwaartepunt": [
+          -0.925,
+          0.403,
+          1.917
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 180,
+        "zwaartepunt": [
+          -0.925,
+          0.403,
+          1.917
+        ],
+        "doorsnijding": []
+      }
+    },
+    {
+      "naam": "Leiwiel_L",
+      "as": "X",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ],
+      "positief": "n.v.t. (wiel)",
+      "betekenis": "machine rijdt achteruit",
+      "min": {
+        "hoek": -180,
+        "zwaartepunt": [
+          -0.925,
+          0.403,
+          -1.916
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 180,
+        "zwaartepunt": [
+          -0.925,
+          0.403,
+          -1.916
+        ],
+        "doorsnijding": []
+      }
+    },
+    {
+      "naam": "Kettingwiel_R",
+      "as": "X",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ],
+      "positief": "n.v.t. (wiel)",
+      "betekenis": "machine rijdt achteruit",
+      "min": {
+        "hoek": -180,
+        "zwaartepunt": [
+          0.925,
+          0.403,
+          1.917
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 180,
+        "zwaartepunt": [
+          0.925,
+          0.403,
+          1.917
+        ],
+        "doorsnijding": []
+      }
+    },
+    {
+      "naam": "Leiwiel_R",
+      "as": "X",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ],
+      "positief": "n.v.t. (wiel)",
+      "betekenis": "machine rijdt achteruit",
+      "min": {
+        "hoek": -180,
+        "zwaartepunt": [
+          0.925,
+          0.403,
+          -1.916
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 180,
+        "zwaartepunt": [
+          0.925,
+          0.403,
+          -1.916
+        ],
+        "doorsnijding": []
+      }
+    },
+    {
+      "naam": "Bovenwagen",
+      "as": "Z",
+      "as_gltf": [
+        0,
+        1,
+        0
+      ],
+      "positief": "links",
+      "betekenis": "naar links",
+      "min": {
+        "hoek": -180,
+        "zwaartepunt": [
+          -0.095,
+          3.086,
+          3.306
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 180,
+        "zwaartepunt": [
+          -0.095,
+          3.086,
+          3.306
+        ],
+        "doorsnijding": []
+      }
+    },
+    {
+      "naam": "Giek",
+      "as": "X",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ],
+      "positief": "heffen",
+      "betekenis": "heffen",
+      "min": {
+        "hoek": -77.0,
+        "zwaartepunt": [
+          0.15,
+          -1.879,
+          -2.945
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 25.0,
+        "zwaartepunt": [
+          0.15,
+          5.397,
+          -3.675
+        ],
+        "doorsnijding": []
+      }
+    },
+    {
+      "naam": "Stick",
+      "as": "X",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ],
+      "positief": "heffen",
+      "betekenis": "stick uit (van de machine af)",
+      "min": {
+        "hoek": -55,
+        "zwaartepunt": [
+          0.15,
+          3.566,
+          -4.605
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 80,
+        "zwaartepunt": [
+          0.15,
+          5.432,
+          -6.983
+        ],
+        "doorsnijding": []
+      }
+    },
+    {
+      "naam": "Bak",
+      "as": "X",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ],
+      "positief": "bak openen (lossen)",
+      "betekenis": "bak openen (lossen)",
+      "min": {
+        "hoek": -50,
+        "zwaartepunt": [
+          0.15,
+          2.376,
+          -5.819
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 95,
+        "zwaartepunt": [
+          0.15,
+          1.734,
+          -6.915
+        ],
+        "doorsnijding": []
+      }
+    }
+  ],
+  "werkbereik": [
+    {
+      "grootheid": "max_graafdiepte_m",
+      "model": 6.715,
+      "datasheet": 6.705,
+      "afwijking": 0.001
+    },
+    {
+      "grootheid": "max_graafhoogte_m",
+      "model": 9.747,
+      "datasheet": 9.745,
+      "afwijking": 0.0
+    },
+    {
+      "grootheid": "max_reikwijdte_grond_m",
+      "model": 10.26,
+      "datasheet": 10.225,
+      "afwijking": 0.003
+    }
+  ],
+  "referenties": [
+    {
+      "bestand": "A40G.glb",
+      "afm": [
+        3.59,
+        4.196,
+        11.406
+      ],
+      "min": [
+        -1.795,
+        -0.015,
+        -4.52
+      ],
+      "max": [
+        1.795,
+        4.181,
+        6.886
+      ],
+      "voorkant": "-Z",
+      "via": "Voorwagen",
+      "wortels": [
+        "A40G"
+      ],
+      "extras_sleutels": [
+        "ao_groep",
+        "breedte_band",
+        "draaias",
+        "driehoeken",
+        "functie",
+        "knop_hoogte",
+        "lengte",
+        "max_hoek_graden",
+        "max_knik_graden",
+        "open_hoek_graden",
+        "standen_graden_naar_voren",
+        "straal_band",
+        "zwaai_graden"
+      ]
+    },
+    {
+      "bestand": "Cat336E_LongReach.glb",
+      "afm": [
+        4.08,
+        8.745,
+        19.112
+      ],
+      "min": [
+        -2.04,
+        -0.008,
+        -15.526
+      ],
+      "max": [
+        2.04,
+        8.737,
+        3.586
+      ],
+      "voorkant": "-Z",
+      "via": "Giek",
+      "wortels": [
+        "Cat336E"
+      ],
+      "extras_sleutels": [
+        "ao_groep",
+        "draaias",
+        "driehoeken",
+        "functie",
+        "kantel_assen",
+        "knop_hoogte",
+        "max_hoek_graden",
+        "open_hoek_graden",
+        "penafstand_max",
+        "penafstand_min",
+        "penafstand_rust",
+        "straal_steekcirkel",
+        "vergrendeld_hoek_graden",
+        "zwaai_graden"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "_uitleg": "Maten voor tools/genereer_graafmachine.py. 'datasheet' = gepubliceerde waarden (bron per sleutel in 'bronnen'); 'geschat' = afgeleid of geschat, niet gepubliceerd. Alle maten in meter, assen: X dwars (links = -X), Y omhoog, voorkant -Z.",
+  "merk": "SANY",
+  "typeaanduiding": "SY265E",
+  "omschrijving": "Elektrische rupsgraafmachine 26-28 t, standaard giek 5,9 m en steel 2,95 m",
+  "modelcode": "SY265E",
+  "datasheet": {
+    "afmetingen": {
+      "breedte_m": 3.19,
+      "rupslengte_m": 4.638,
+      "rupscontactlengte_m": 3.833,
+      "spoorbreedte_m": 2.59,
+      "rupsplaat_m": 0.6,
+      "bovenwagenbreedte_m": 2.71,
+      "staartdraaistraal_m": 3.38,
+      "contragewicht_vrije_hoogte_m": 1.045,
+      "bodemvrijheid_m": 0.47,
+      "hoogte_boven_cabine_m": 3.255,
+      "transportlengte_m": 10.565,
+      "transporthoogte_m": 3.51
+    },
+    "werkbereik": {
+      "max_graafdiepte_m": 6.705,
+      "max_graafhoogte_m": 9.745,
+      "max_reikwijdte_grond_m": 10.225
+    },
+    "overig": {
+      "gieklengte_m": 5.9,
+      "steellengte_m": 2.95,
+      "bakinhoud_m3": 1.35,
+      "bedrijfsgewicht_kg": 28100,
+      "batterij_kwh": 600
+    },
+    "bronnen": {
+      "breedte_m": "SANY-flyer SY265E (2025-12-10) via machinepartner.no; Veenma 3,19 m; DNL 3,22 m",
+      "rupslengte_m": "SANY-flyer SY265E / DNL (totale lengte onderwagen 4.638 mm)",
+      "rupscontactlengte_m": "SANY-flyer SY265E",
+      "spoorbreedte_m": "SANY-flyer SY265E en DNL",
+      "rupsplaat_m": "SANY-flyer SY265E en Veenma (standaard 600 mm; DNL noemt 900 mm)",
+      "bovenwagenbreedte_m": "Veenma",
+      "staartdraaistraal_m": "SANY-flyer SY265E (Veenma noemt 3.105 mm, DNL 3.800 mm)",
+      "contragewicht_vrije_hoogte_m": "SANY UK SY265C (zelfde onderwagen; niet gepubliceerd voor de E)",
+      "bodemvrijheid_m": "SANY UK SY265C (niet gepubliceerd voor de E)",
+      "hoogte_boven_cabine_m": "DNL / Veenma",
+      "transportlengte_m": "SANY-flyer SY265E en DNL (Veenma 10.290 mm)",
+      "transporthoogte_m": "SANY-flyer SY265E (giek in transportstand)",
+      "max_graafdiepte_m": "DNL en Veenma",
+      "max_graafhoogte_m": "SANY-flyer SY265E / DNL (Veenma 9.815 mm)",
+      "max_reikwijdte_grond_m": "DNL en Veenma",
+      "gieklengte_m": "SANY UK SY265C; zelfde werkbereik als de E, dus aangenomen gelijk",
+      "steellengte_m": "SANY UK SY265C; aangenomen gelijk",
+      "bakinhoud_m3": "SANY-flyer SY265E (1,35/1,55 m³)",
+      "bedrijfsgewicht_kg": "SANY-flyer SY265E / DNL (andere dealers 26.500-28.000 kg)",
+      "batterij_kwh": "DNL e.a. (Veenma noemt 422 kWh LFP)"
+    }
+  },
+  "geschat": {
+    "rupshoogte_m": 0.805,
+    "kettingwiel_steekcirkel_m": 0.34,
+    "giekvoet": [
+      0.15,
+      2.05,
+      -0.35
+    ],
+    "giek_knik": {
+      "positie": 0.4,
+      "hoogte": 1.0
+    },
+    "giek_doorsnede": [
+      0.5,
+      0.78,
+      0.56
+    ],
+    "steel_doorsnede": [
+      0.42,
+      0.56,
+      0.4
+    ],
+    "steel_hefboom_m": 0.8,
+    "bak_straal_m": 1.5,
+    "bak_breedte_m": 1.35,
+    "cabine": {
+      "x": [
+        -1.355,
+        -0.405
+      ],
+      "z": [
+        -1.3,
+        0.45
+      ]
+    },
+    "dek_voorkant_z": -1.3,
+    "dek_hoogte_m": 1.35,
+    "contragewicht_hoogte_m": 2.35,
+    "accukap_hoogte_m": 2.45,
+    "ruststand": {
+      "giek": 30,
+      "steel": -70,
+      "bak": -150
+    },
+    "hoeken_absoluut": {
+      "giek": [
+        -47,
+        57
+      ],
+      "steel_relatief": [
+        -155,
+        -20
+      ],
+      "bak_relatief": [
+        -130,
+        15
+      ]
+    },
+    "kleuren": {
+      "geel": [
+        242,
+        183,
+        5,
+        255
+      ],
+      "donkergrijs": [
+        45,
+        47,
+        50,
+        255
+      ],
+      "rups": [
+        30,
+        30,
+        32,
+        255
+      ],
+      "staal": [
+        150,
+        152,
+        155,
+        255
+      ],
+      "chroom": [
+        205,
+        208,
+        212,
+        255
+      ],
+      "glas": [
+        70,
+        95,
+        110,
+        110
+      ],
+      "accent": [
+        0,
+        120,
+        190,
+        255
+      ]
+    },
+    "giekcilinder_x_afstand_m": 0.4,
+    "koppeling": {
+      "tuimelaar_pen_m": 0.5,
+      "tuimelaar_pen_uit_m": 0.35,
+      "tuimelaar_m": 0.65,
+      "bakstang_m": 0.75,
+      "bakoor_m": 0.5,
+      "bakoor_hoek": 30
+    },
+    "bak_profiel_uv": [
+      [
+        0.35,
+        0.1
+      ],
+      [
+        0.3,
+        0.35
+      ],
+      [
+        0.45,
+        0.68
+      ],
+      [
+        0.85,
+        0.84
+      ],
+      [
+        1.25,
+        0.62
+      ],
+      [
+        1.45,
+        0.16
+      ],
+      [
+        1.5,
+        0.0
+      ],
+      [
+        1.2,
+        0.04
+      ],
+      [
+        0.7,
+        0.08
+      ]
+    ],
+    "steel_hefboom_hoek": -18,
+    "giek_vork_m": 1.5
+  }
+}

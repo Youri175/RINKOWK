@@ -23,7 +23,8 @@ import numpy as np
 import trimesh
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from gltf_io import Deel, Materiaal, schrijf_glb  # noqa: E402
+from gltf_io import (Deel, Materiaal, matrix_naar_quat, rotatie_matrix,  # noqa: E402
+                     rotatie_van_naar, schrijf_glb, transformeer)
 
 HIER = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(HIER, "conventies.json"), encoding="utf-8") as _f:
@@ -349,7 +350,9 @@ def bouw(cfg_pad, uitmap, controle=True):
     alle_pts = np.vstack([p[0] for n in namen for p in prims[n]])
     nul_pts = np.vstack([p[0] for p in prims[nul_deel]]) if prims[nul_deel] else alle_pts
     lo, hi = nul_pts.min(0), nul_pts.max(0)
-    nulpunt = np.array([(lo[0] + hi[0]) / 2, alle_pts[:, 1].min(), (lo[2] + hi[2]) / 2])
+    nulpunt = np.array([(lo[0] + hi[0]) / 2, lo[1], (lo[2] + hi[2]) / 2])
+    if "nulpunt_m" in cfg:                  # bv. knikas van een knikdumper
+        nulpunt = np.array(cfg["nulpunt_m"], float)
     if np.linalg.norm(nulpunt) > 0.01:
         log.afwijkingen.append(f"midden onderwagen op de grond lag in de bron op "
                                f"{np.round(nulpunt, 3).tolist()} m (na eenheid/as-conversie): naar 0 verschoven")
@@ -390,10 +393,10 @@ def bouw(cfg_pad, uitmap, controle=True):
             log.open.append(f"{overgeslagen_uv} getextureerde primitieven niet gedecimeerd (UV's)")
         log.aannames.append("polygonen verlaagd met uniforme factor per niet-behouden onderdeel; "
                             "geen zichtbaarheidsanalyse")
-    na = sum(len(p[1]) for n in namen for p in prims[n])
-    log.info(f"polygonen: {totaal} -> {na} (doel {doel_poly})")
+    log.info(f"polygonen: {totaal} -> {sum(len(p[1]) for n in namen for p in prims[n])} (doel {doel_poly})")
 
     # draaipunten en hiërarchie
+    wortel = cfg.get("wortel", code)
     parent_van = {o["naam"]: o.get("parent") for o in onderdelen}
     dp = {}
     for o in onderdelen:
@@ -422,28 +425,71 @@ def bouw(cfg_pad, uitmap, controle=True):
     for n in namen:
         plaats(n)
 
+    # wereldrotatie per onderdeel: identiteit (bevroren), behalve cilinderhelften die met
+    # hun lokale richting (-Z) naar de pen van de andere helft wijzen (zoals de referentie)
+    richting = np.array(CONV["cilinders"]["richting_lokaal"], float)
+    Rw = {}
+    for o in onderdelen:
+        Rw[o["naam"]] = np.eye(3)
+        if o.get("richt_naar") is not None:
+            doelpunt = draaipunt(o["richt_naar"], o["naam"], bboxen, bron_naar_doel)
+            Rw[o["naam"]] = rotatie_van_naar(richting, doelpunt - dp[o["naam"]])
+
     as_map = CONV["as_naar_gltf"]
     sl = CONV["extras_sleutels"]
-    delen, joints = [], []
+    godot = {"X": "X", "Y": "-Z", "Z": "Y"}
+    standaard_betekenis = {"X": "heffen", "Y": "naar links kantelen", "Z": "naar links"}
+    cfg_joint = {o["naam"]: o["joint"] for o in onderdelen if o.get("joint") and detail == "volledig"}
+
+    def voorouders(n):
+        uit = []
+        while parent_van.get(n) is not None:
+            n = parent_van[n]
+            uit.append(n)
+        return uit
+
+    def penafstand(huis, stang, joint, hoek):
+        """Pen-tot-penafstand van een cilinder als `joint` op `hoek` staat."""
+        j = cfg_joint[joint]
+        as_g = np.array(j.get("as_gltf", as_map[j["as"]]), float)
+        rot = rotatie_matrix(as_g, hoek, dp[joint])
+        a, b = dp[huis], dp[stang]
+        if joint in voorouders(stang) or joint == stang:
+            b = transformeer([b], rot)[0]
+        else:
+            a = transformeer([a], rot)[0]
+        return float(np.linalg.norm(b - a))
+
+    delen = [Deel(wortel, None, np.zeros(3))]
+    joints = []
     for n in volgorde:
         o = next(x for x in onderdelen if x["naam"] == n)
         par = parent_van[n]
-        t = dp[n] - (dp[par] if par else np.zeros(3))
-        d = Deel(n, par, t)
+        Rp = Rw[par] if par else np.eye(3)
+        t = Rp.T @ (dp[n] - (dp[par] if par else np.zeros(3)))
+        d = Deel(n, par or wortel, t)
+        r_lok = Rp.T @ Rw[n]
+        if not np.allclose(r_lok, np.eye(3), atol=1e-9):
+            d.rotatie = matrix_naar_quat(r_lok)
         for pos, faces, uv, mi, _ in prims[n]:
-            lp = pos - dp[n]
+            lp = (pos - dp[n]) @ Rw[n]          # = Rw^T (p - draaipunt)
             if uv is None:
                 lp, faces, nrm = vertex_normalen(lp, faces)
             else:
                 nrm = np.asarray(trimesh.Trimesh(lp, faces, process=False).vertex_normals)
             d.primitieven.append((lp, nrm, uv, faces, mi))
-        if o.get("joint") and detail == "volledig":
-            j = o["joint"]
-            d.extras.update({sl["type"]: j.get("type", "rotatie"), sl["as"]: j["as"],
-                             sl["as_gltf"]: j.get("as_gltf", as_map[j["as"]]), sl["min"]: j["min"],
-                             sl["max"]: j["max"], sl["bron"]: j.get("bron", "geschat")})
+        d.extras.update(o.get("extras", {}))
+        if n in cfg_joint:
+            j = cfg_joint[n]
+            betekenis = j.get("positief", standaard_betekenis[j["as"]])
+            d.extras[sl["as_tekst"]] = f"lokaal {j['as']} (Godot: {godot[j['as']]}); positieve hoek = {betekenis}"
+            if j.get("sleutel_min", sl["min"]):           # bv. knikdumper: alleen max_knik_graden
+                d.extras[j.get("sleutel_min", sl["min"])] = j["min"]
+            d.extras[j.get("sleutel_max", sl["max"])] = j["max"]
             joints.append({"naam": n, "type": j.get("type", "rotatie"), "as": j["as"],
-                           "min": j["min"], "max": j["max"], "bron": j.get("bron", "geschat")})
+                           "min": j["min"], "max": j["max"], "bron": j.get("bron", "geschat"),
+                           "positief": betekenis,
+                           "as_gltf": j.get("as_gltf", as_map[j["as"]])})
         if o.get("wiel"):
             w = o["wiel"]
             lo_w, hi_w = bboxen[n]
@@ -459,11 +505,33 @@ def bouw(cfg_pad, uitmap, controle=True):
                 log.open.append(f"{n}: straal_steekcirkel onbekend")
         delen.append(d)
 
+    # cilinders: penafstand in rust en bij de grenzen van de joint die ze bedient
+    cilinders = []
+    for o in onderdelen:
+        c = o.get("cilinder")
+        if not c or not o["naam"].endswith("_Huis") or detail != "volledig":
+            continue
+        huis, stang = o["naam"], c["paar"] + "_Stang"
+        joint = c["joint"]
+        rust = float(np.linalg.norm(dp[stang] - dp[huis]))
+        if "penafstand_min" in c:            # bv. via een koppeling: door de generator berekend
+            grens = [c["penafstand_min"], c["penafstand_max"]]
+        else:
+            grens = [penafstand(huis, stang, joint, a)
+                     for a in np.linspace(cfg_joint[joint]["min"], cfg_joint[joint]["max"], 41)]
+        info = {"penafstand_rust": round(rust, 4), "penafstand_min": round(min(grens), 4),
+                "penafstand_max": round(max(grens), 4)}
+        for deel in delen:
+            if deel.naam == huis:
+                deel.extras.update({"functie": f"Cilinderhuis; lokale Y (Godot: -Z) wijst naar de pen van {stang}", **info})
+            if deel.naam == stang:
+                deel.extras.update({"functie": f"Zuigerstang; lokale Y (Godot: -Z) wijst naar de pen van {huis}", **info})
+        cilinders.append({"naam": c["paar"], "huis": huis, "stang": stang, "joint": joint, **info})
+
+    na = sum(len(p[3]) for d in delen for p in d.primitieven)
+    delen[0].extras["driehoeken"] = int(na)
     glb = os.path.join(doelmap, "model.glb")
-    schrijf_glb(glb, delen, mats.lijst,
-                wortel_extras={"code": code, "merk": cfg.get("merk", ""),
-                               "typeaanduiding": cfg.get("typeaanduiding", ""),
-                               "rig": rig})
+    schrijf_glb(glb, delen, mats.lijst)
     log.info(f"geschreven: {glb}")
 
     # manifest
@@ -479,20 +547,21 @@ def bouw(cfg_pad, uitmap, controle=True):
     if joints:
         log.afwijkingen.append("spiegeling: glTF is rechtshandig, Unreal linkshandig; de importer "
                                "spiegelt één as. Niet in het model gecorrigeerd")
-        if CONV.get("extras_sleutels_voorlopig"):
-            log.open.append("sleutelnamen voor joint-limieten in node-extras zijn voorlopig "
-                            f"({', '.join(sl[k] for k in ('type', 'as', 'min', 'max'))}); "
-                            "referentie-GLB's niet beschikbaar om ze over te nemen")
-        log.aannames.append("joint-assen in de 4DVis-notatie (Z = verticaal, X = dwars, Y = langs); "
-                            f"de richting in glTF staat in extras.{sl['as_gltf']}, zo gekozen dat "
-                            "positief = heffen/open (X) en links (Z)")
+        log.aannames.append("joint-assen in Blender-notatie zoals extras.draaias in de referentie "
+                            "(X = dwars, Z = verticaal); positief = heffen/uit/open (X) en naar links (Z)")
+        if sl.get("min_nieuw"):
+            log.open.append(f"sleutel '{sl['min']}' komt niet in de referentie voor (die kent alleen "
+                            f"max_hoek_graden / max_knik_graden en cilinder-penafstanden); "
+                            "naar hetzelfde patroon toegevoegd, bevestigen in 4DVis")
     if CONV.get("referentie_voorlopig"):
         log.open.append("referentiemodellen (Cat336E_LongReach.glb, A40G.glb) niet beschikbaar: "
-                        f"voorkant {CONV['doel_voorkant']} en nulpunt volgen de glTF-conventie, "
-                        "niet geverifieerd tegen de referentie")
+                        f"voorkant {CONV['doel_voorkant']} en nulpunt niet geverifieerd")
     for j in joints:
         if j["bron"] == "geschat":
             log.aannames.append(f"joint {j['naam']}: limieten geschat ({j['min']}..{j['max']})")
+    log.afwijkingen += cfg.get("afwijkingen", [])
+    log.aannames += cfg.get("aannames", [])
+    log.open += cfg.get("openstaande_punten", [])
 
     yaw = cfg.get("yaw_correctie_deg", 0)
     schaal = cfg.get("schaal", 1)
@@ -516,10 +585,14 @@ def bouw(cfg_pad, uitmap, controle=True):
         "aannames": log.aannames,
         "openstaande_punten": log.open,
         # aanvullend (niet in het basissjabloon), gebruikt door controleer.py
-        "hierarchie": {n: parent_van[n] for n in volgorde},
+        "wortel": wortel,
+        "nulpunt_onderdeel": nul_deel,
+        "hierarchie": {wortel: None, **{n: parent_van[n] or wortel for n in volgorde}},
         "draaipunten_m": {n: [round(float(x), 4) for x in dp[n]] for n in volgorde},
+        "cilinders": cilinders,
         "textures": mats.texture_bestanden,
         "gebouwd": datetime.date.today().isoformat(),
+        **cfg.get("manifest_extra", {}),
     }
     if rignamen - set(namen) and rig:
         manifest["openstaande_punten"].append(
@@ -529,6 +602,14 @@ def bouw(cfg_pad, uitmap, controle=True):
     with open(os.path.join(doelmap, "bouwlog.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(log.regels) + "\n")
 
+    # voorbeeldplaatjes (rust + standen uit de config); daarna de controle, die ze in het rapport opneemt
+    standen = {"rust": {}, **cfg.get("voorbeeldstanden", {})} if detail == "volledig" else {"rust": {}}
+    for naam, stand in standen.items():
+        args = [sys.executable, os.path.join(HIER, "render.py"), doelmap,
+                "--uit", os.path.join(doelmap, f"voorbeeld_{naam}.png")]
+        args += [a for k, v in stand.items() for a in ("--stand", f"{k}={v}")]
+        if subprocess.run(args, capture_output=True).returncode != 0:
+            log.info(f"voorbeeld {naam} niet gemaakt (matplotlib?)")
     if controle:
         subprocess.run([sys.executable, os.path.join(HIER, "controleer.py"), doelmap], check=False)
     return doelmap

@@ -1,10 +1,11 @@
 {
-  "_uitleg": "Sjabloon knikdumper (rig Knikdumper). Zie _sjabloon_graafmachine.json voor de draaipuntnotatie. Het nulpunt ligt op het midden van 'nulpunt_onderdeel' op de grond.",
+  "_uitleg": "Sjabloon knikdumper (rig Knikdumper), opbouw volgens A40G.glb: lege wortel; daaronder Achterwagen en Voorwagen; Laadbak onder Achterwagen, Lading onder Laadbak; wielen onder hun wagendeel. Nulpunt op de knikas op de grond (nulpunt_m, in doelcoördinaten na eenheid/as-conversie). Knikhoek in extras.max_knik_graden en kiephoek in extras.max_hoek_graden, zoals in de referentie.",
   "merk": "",
   "typeaanduiding": "",
   "machinetype": "dumper",
-  "modelcode": "",
+  "modelcode": "XXX",
   "detailniveau": "volledig",
+  "wortel": "DU_XXX",
   "bron": {"bestand": "", "url": "", "licentie": "", "formaat": ""},
   "bron_eenheid": "auto",
   "bron_up": "+Z",
@@ -12,15 +13,20 @@
   "verwijder_intern": true,
   "doel_polygonen": 50000,
   "nulpunt_onderdeel": "Achterwagen",
+  "nulpunt_m": [0, 0, 0],
   "onderdelen": [
-    {"naam": "Achterwagen", "bron": ["rear|achter"]},
-    {"naam": "Voorwagen", "parent": "Achterwagen", "bron": ["front|voor|cab"], "draaipunt": {"bron": [0, 0, 0]},
-     "joint": {"as": "Z", "min": -45, "max": 45, "bron": "geschat"}},
-    {"naam": "Laadbak", "parent": "Achterwagen", "bron": ["body|dump|bak"], "draaipunt": {"bbox": [0, -1, -1], "van": "Laadbak"},
-     "joint": {"as": "X", "min": 0, "max": 70, "bron": "geschat"}},
+    {"naam": "Achterwagen", "bron": ["rear|achter|tandem"], "extras": {"ao_groep": "achter"}},
+    {"naam": "Voorwagen", "bron": ["front|voor|hood"], "draaipunt": [0, 0, 0],
+     "joint": {"as": "Z", "min": -40, "max": 40, "bron": "datasheet", "positief": "naar links",
+               "sleutel_min": null, "sleutel_max": "max_knik_graden"}},
+    {"naam": "DU_XXX_Cabine", "parent": "Voorwagen", "bron": ["cab"]},
+    {"naam": "Laadbak", "parent": "Achterwagen", "bron": ["body|dump|bak"], "draaipunt": {"bbox": [0, -1, 1], "van": "Laadbak"},
+     "joint": {"as": "X", "min": 0, "max": 70, "bron": "datasheet", "positief": "de voorkant van de bak gaat omhoog",
+               "sleutel_min": null, "sleutel_max": "max_hoek_graden"}},
     {"naam": "Lading", "parent": "Laadbak", "bron": ["load|lading"]},
     {"naam": "Wiel_VL", "parent": "Voorwagen", "bron": ["wheel.*fl"], "draaipunt": {"bbox": [0, 0, 0]},
-     "joint": {"as": "X", "min": -360, "max": 360, "bron": "geschat"}, "wiel": {"straal_band": "auto", "straal_steekcirkel": null}}
+     "joint": {"as": "X", "min": -180, "max": 180, "bron": "geschat", "positief": "wiel rolt achteruit"},
+     "wiel": {"straal_band": "auto", "straal_steekcirkel": null}}
   ],
-  "behoud": ["Voorwagen", "Laadbak"]
+  "behoud": ["Voorwagen", "Laadbak", "DU_XXX_Cabine"]
 }

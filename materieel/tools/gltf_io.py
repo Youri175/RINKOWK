@@ -40,6 +40,33 @@ def as_hoek_naar_quat(as_vec, hoek_deg):
     return [float(a[0] * s), float(a[1] * s), float(a[2] * s), float(np.cos(h))]
 
 
+def matrix_naar_quat(m):
+    """3x3 rotatiematrix naar quaternion [x, y, z, w]."""
+    m = np.asarray(m, float)
+    w = np.sqrt(max(0.0, 1 + m[0, 0] + m[1, 1] + m[2, 2])) / 2
+    x = np.sqrt(max(0.0, 1 + m[0, 0] - m[1, 1] - m[2, 2])) / 2
+    y = np.sqrt(max(0.0, 1 - m[0, 0] + m[1, 1] - m[2, 2])) / 2
+    z = np.sqrt(max(0.0, 1 - m[0, 0] - m[1, 1] + m[2, 2])) / 2
+    x = np.copysign(x, m[2, 1] - m[1, 2])
+    y = np.copysign(y, m[0, 2] - m[2, 0])
+    z = np.copysign(z, m[1, 0] - m[0, 1])
+    q = np.array([x, y, z, w])
+    return [float(c) for c in q / np.linalg.norm(q)]
+
+
+def rotatie_van_naar(a, b):
+    """Kleinste rotatie (3x3) die richting a op richting b legt."""
+    a = np.asarray(a, float) / np.linalg.norm(a)
+    b = np.asarray(b, float) / np.linalg.norm(b)
+    v, c = np.cross(a, b), float(a @ b)
+    if c < -1 + 1e-9:                       # tegengesteld: 180 graden om een loodrechte as
+        p = np.cross(a, [1, 0, 0]) if abs(a[0]) < 0.9 else np.cross(a, [0, 1, 0])
+        p /= np.linalg.norm(p)
+        return 2 * np.outer(p, p) - np.eye(3)
+    k = np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]])
+    return np.eye(3) + k + k @ k / (1 + c)
+
+
 def trs_matrix(t=None, r=None, s=None):
     m = np.eye(4)
     if s is not None:
@@ -244,6 +271,7 @@ class Deel:
     translatie: np.ndarray                    # lokaal t.o.v. parent
     primitieven: list = field(default_factory=list)  # (pos, nrm, uv|None, idx, materiaal_idx)
     extras: dict = field(default_factory=dict)
+    rotatie: list | None = None               # quaternion; alleen voor gerichte cilinderhelften
 
 
 class _Buffer:
@@ -311,6 +339,8 @@ def schrijf_glb(pad, delen, materialen, wortel_extras=None, scene_naam="Scene"):
         t = np.asarray(d.translatie, float)
         if np.any(np.abs(t) > 0):
             node.translation = [float(x) for x in t]
+        if d.rotatie is not None:
+            node.rotation = [float(x) for x in d.rotatie]
         if d.extras:
             node.extras = d.extras
         if d.primitieven:

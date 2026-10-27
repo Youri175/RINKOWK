@@ -1,0 +1,612 @@
+{
+  "_uitleg": "Gegenereerd door tools/genereer_graafmachine.py uit EX_SY265E_maten.json; niet met de hand bewerken.",
+  "merk": "SANY",
+  "typeaanduiding": "SY265E",
+  "machinetype": "graafmachine",
+  "modelcode": "SY265E",
+  "detailniveau": "volledig",
+  "wortel": "EX_SY265E",
+  "bron": {
+    "bestand": "../gegenereerd/EX_SY265E_bron.glb",
+    "url": "",
+    "formaat": "GLB (procedureel, m, Y-up)",
+    "licentie": "Eigen werk: procedureel gegenereerd uit openbare datasheetmaten; vrij te gebruiken en herdistribueren. Bevat geen merklogo's of fabrikantgeometrie."
+  },
+  "bron_eenheid": "m",
+  "bron_up": "+Y",
+  "bron_voorkant": "-Z",
+  "nulpunt_m": [
+    0,
+    0,
+    0
+  ],
+  "nulpunt_onderdeel": "EX_SY265E_Onderwagen",
+  "doel_polygonen": 50000,
+  "onderdelen": [
+    {
+      "naam": "EX_SY265E_Onderwagen",
+      "bron": [
+        "/Onderwagen__\\d+$"
+      ],
+      "extras": {
+        "ao_groep": "onderwagen",
+        "functie": "Middenstuk, rupsframes en draaikrans (vast)"
+      }
+    },
+    {
+      "naam": "EX_SY265E_Rups_L",
+      "parent": "EX_SY265E_Onderwagen",
+      "bron": [
+        "/Rups_L__\\d+$"
+      ],
+      "extras": {
+        "ao_groep": "onderwagen",
+        "functie": "Rups, stilstaand"
+      }
+    },
+    {
+      "naam": "Kettingwiel_L",
+      "parent": "EX_SY265E_Onderwagen",
+      "bron": [
+        "/Kettingwiel_L__\\d+$"
+      ],
+      "draaipunt": [
+        -0.925,
+        0.4025,
+        1.9165
+      ],
+      "joint": {
+        "as": "X",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "machine rijdt achteruit"
+      },
+      "wiel": {
+        "straal_band": 0.4025,
+        "straal_steekcirkel": 0.34
+      },
+      "extras": {
+        "ao_groep": "onderwagen"
+      }
+    },
+    {
+      "naam": "Leiwiel_L",
+      "parent": "EX_SY265E_Onderwagen",
+      "bron": [
+        "/Leiwiel_L__\\d+$"
+      ],
+      "draaipunt": [
+        -0.925,
+        0.4025,
+        -1.9165
+      ],
+      "joint": {
+        "as": "X",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "machine rijdt achteruit"
+      },
+      "wiel": {
+        "straal_band": 0.4025,
+        "straal_steekcirkel": 0.34
+      },
+      "extras": {
+        "ao_groep": "onderwagen"
+      }
+    },
+    {
+      "naam": "EX_SY265E_Rups_R",
+      "parent": "EX_SY265E_Onderwagen",
+      "bron": [
+        "/Rups_R__\\d+$"
+      ],
+      "extras": {
+        "ao_groep": "onderwagen",
+        "functie": "Rups, stilstaand"
+      }
+    },
+    {
+      "naam": "Kettingwiel_R",
+      "parent": "EX_SY265E_Onderwagen",
+      "bron": [
+        "/Kettingwiel_R__\\d+$"
+      ],
+      "draaipunt": [
+        0.925,
+        0.4025,
+        1.9165
+      ],
+      "joint": {
+        "as": "X",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "machine rijdt achteruit"
+      },
+      "wiel": {
+        "straal_band": 0.4025,
+        "straal_steekcirkel": 0.34
+      },
+      "extras": {
+        "ao_groep": "onderwagen"
+      }
+    },
+    {
+      "naam": "Leiwiel_R",
+      "parent": "EX_SY265E_Onderwagen",
+      "bron": [
+        "/Leiwiel_R__\\d+$"
+      ],
+      "draaipunt": [
+        0.925,
+        0.4025,
+        -1.9165
+      ],
+      "joint": {
+        "as": "X",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "machine rijdt achteruit"
+      },
+      "wiel": {
+        "straal_band": 0.4025,
+        "straal_steekcirkel": 0.34
+      },
+      "extras": {
+        "ao_groep": "onderwagen"
+      }
+    },
+    {
+      "naam": "Bovenwagen",
+      "bron": [
+        "/Bovenwagen__\\d+$"
+      ],
+      "draaipunt": [
+        0,
+        0,
+        0
+      ],
+      "joint": {
+        "as": "Z",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "naar links"
+      },
+      "extras": {
+        "ao_groep": "boven",
+        "functie": "Bovenwagen; zwenkt om lokale Z (Godot: Y) door de oorsprong"
+      }
+    },
+    {
+      "naam": "EX_SY265E_Cabine",
+      "parent": "Bovenwagen",
+      "bron": [
+        "/EX_SY265E_Cabine__\\d+$"
+      ],
+      "extras": {
+        "ao_groep": "boven",
+        "functie": "Cabine (vereenvoudigd)"
+      }
+    },
+    {
+      "naam": "EX_SY265E_Cabine_Glas",
+      "parent": "Bovenwagen",
+      "bron": [
+        "/EX_SY265E_Cabine_Glas__\\d+$"
+      ],
+      "extras": {
+        "ao_groep": "",
+        "functie": "Vaste ruiten"
+      }
+    },
+    {
+      "naam": "Giek",
+      "parent": "Bovenwagen",
+      "bron": [
+        "/Giek__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        2.05,
+        -0.35
+      ],
+      "joint": {
+        "as": "X",
+        "min": -77.0,
+        "max": 25.0,
+        "bron": "geschat",
+        "positief": "heffen"
+      },
+      "extras": {
+        "ao_groep": "giek"
+      }
+    },
+    {
+      "naam": "Stick",
+      "parent": "Giek",
+      "bron": [
+        "/Stick__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        5.0,
+        -5.4595
+      ],
+      "joint": {
+        "as": "X",
+        "min": -55,
+        "max": 80,
+        "bron": "geschat",
+        "positief": "stick uit (van de machine af)"
+      },
+      "extras": {
+        "ao_groep": "stick"
+      }
+    },
+    {
+      "naam": "Bak",
+      "parent": "Stick",
+      "bron": [
+        "/Bak__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        2.2279,
+        -6.4685
+      ],
+      "joint": {
+        "as": "X",
+        "min": -50,
+        "max": 95,
+        "bron": "geschat",
+        "positief": "bak openen (lossen)"
+      },
+      "extras": {
+        "ao_groep": "bak"
+      }
+    },
+    {
+      "naam": "Tuimelaar",
+      "parent": "Stick",
+      "bron": [
+        "/Tuimelaar__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        2.8175,
+        -6.6264
+      ],
+      "extras": {
+        "ao_groep": "tuimelaar",
+        "draaias": "lokaal X (Godot: X)",
+        "functie": "Bakkoppeling (vierstangen); volgt de bakhoek"
+      }
+    },
+    {
+      "naam": "Bakstang",
+      "parent": "Tuimelaar",
+      "bron": [
+        "/Bakstang__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        2.5583,
+        -7.2225
+      ],
+      "extras": {
+        "ao_groep": "bakstang",
+        "draaias": "lokaal X (Godot: X)",
+        "functie": "Bakkoppeling (vierstangen); volgt de bakhoek"
+      }
+    },
+    {
+      "naam": "Giekcilinder_L_Huis",
+      "parent": "Bovenwagen",
+      "bron": [
+        "/Giekcilinder_L_Huis__\\d+$"
+      ],
+      "draaipunt": [
+        -0.25,
+        1.62,
+        -1.25
+      ],
+      "richt_naar": [
+        -0.25,
+        3.9304,
+        -2.7285
+      ],
+      "cilinder": {
+        "paar": "Giekcilinder_L",
+        "joint": "Giek",
+        "penafstand_min": 2.0346,
+        "penafstand_max": 3.173
+      },
+      "extras": {
+        "ao_groep": ""
+      }
+    },
+    {
+      "naam": "Giekcilinder_L_Stang",
+      "parent": "Giek",
+      "bron": [
+        "/Giekcilinder_L_Stang__\\d+$"
+      ],
+      "draaipunt": [
+        -0.25,
+        3.9304,
+        -2.7285
+      ],
+      "richt_naar": [
+        -0.25,
+        1.62,
+        -1.25
+      ],
+      "cilinder": {
+        "paar": "Giekcilinder_L",
+        "joint": "Giek",
+        "penafstand_min": 2.0346,
+        "penafstand_max": 3.173
+      },
+      "extras": {
+        "ao_groep": ""
+      }
+    },
+    {
+      "naam": "Giekcilinder_R_Huis",
+      "parent": "Bovenwagen",
+      "bron": [
+        "/Giekcilinder_R_Huis__\\d+$"
+      ],
+      "draaipunt": [
+        0.55,
+        1.62,
+        -1.25
+      ],
+      "richt_naar": [
+        0.55,
+        3.9304,
+        -2.7285
+      ],
+      "cilinder": {
+        "paar": "Giekcilinder_R",
+        "joint": "Giek",
+        "penafstand_min": 2.0346,
+        "penafstand_max": 3.173
+      },
+      "extras": {
+        "ao_groep": ""
+      }
+    },
+    {
+      "naam": "Giekcilinder_R_Stang",
+      "parent": "Giek",
+      "bron": [
+        "/Giekcilinder_R_Stang__\\d+$"
+      ],
+      "draaipunt": [
+        0.55,
+        3.9304,
+        -2.7285
+      ],
+      "richt_naar": [
+        0.55,
+        1.62,
+        -1.25
+      ],
+      "cilinder": {
+        "paar": "Giekcilinder_R",
+        "joint": "Giek",
+        "penafstand_min": 2.0346,
+        "penafstand_max": 3.173
+      },
+      "extras": {
+        "ao_groep": ""
+      }
+    },
+    {
+      "naam": "Stickcilinder_Huis",
+      "parent": "Giek",
+      "bron": [
+        "/Stickcilinder_Huis__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        4.7152,
+        -1.9867
+      ],
+      "richt_naar": [
+        0.15,
+        5.7995,
+        -5.4316
+      ],
+      "cilinder": {
+        "paar": "Stickcilinder",
+        "joint": "Stick",
+        "penafstand_min": 2.7098,
+        "penafstand_max": 4.1826
+      },
+      "extras": {
+        "ao_groep": ""
+      }
+    },
+    {
+      "naam": "Stickcilinder_Stang",
+      "parent": "Stick",
+      "bron": [
+        "/Stickcilinder_Stang__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        5.7995,
+        -5.4316
+      ],
+      "richt_naar": [
+        0.15,
+        4.7152,
+        -1.9867
+      ],
+      "cilinder": {
+        "paar": "Stickcilinder",
+        "joint": "Stick",
+        "penafstand_min": 2.7098,
+        "penafstand_max": 4.1826
+      },
+      "extras": {
+        "ao_groep": ""
+      }
+    },
+    {
+      "naam": "Bakcilinder_Huis",
+      "parent": "Stick",
+      "bron": [
+        "/Bakcilinder_Huis__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        4.7208,
+        -6.0081
+      ],
+      "richt_naar": [
+        0.15,
+        2.5583,
+        -7.2225
+      ],
+      "cilinder": {
+        "paar": "Bakcilinder",
+        "joint": "Bak",
+        "penafstand_min": 1.7019,
+        "penafstand_max": 2.6339
+      },
+      "extras": {
+        "ao_groep": ""
+      }
+    },
+    {
+      "naam": "Bakcilinder_Stang",
+      "parent": "Tuimelaar",
+      "bron": [
+        "/Bakcilinder_Stang__\\d+$"
+      ],
+      "draaipunt": [
+        0.15,
+        2.5583,
+        -7.2225
+      ],
+      "richt_naar": [
+        0.15,
+        4.7208,
+        -6.0081
+      ],
+      "cilinder": {
+        "paar": "Bakcilinder",
+        "joint": "Bak",
+        "penafstand_min": 1.7019,
+        "penafstand_max": 2.6339
+      },
+      "extras": {
+        "ao_groep": ""
+      }
+    }
+  ],
+  "behoud": [
+    "EX_SY265E_Cabine",
+    "Giek",
+    "Stick",
+    "Bak"
+  ],
+  "aannames": [
+    "Vereenvoudigd model (optie C): maten uit de datasheet, vormen schematisch; geen fabrikantgeometrie",
+    "Giek 5,9 m en steel 2,95 m van de SY265C overgenomen: het werkbereik van de E is gelijk aan dat van de C",
+    "Werkhoeken giek -47.0..55.0° absoluut, steel [-155, -20]° en bak [-130, 15]° relatief; giekgrenzen afgestemd op max graafdiepte en -hoogte uit de datasheet",
+    "Punt-kinematica (tandpunt): diepte 6.71 m, hoogte 9.72 m, reikwijdte op de grond 10.22 m",
+    "Ligging pennen (giekvoet, cilinderpennen, bakkoppeling), cabine, accukap en contragewichthoogte geschat naar de verhoudingen in het Cat336E-referentiemodel; cilinderpennen en koppeling zo gekozen dat er over het hele bereik geen doorsnijding is en de slagverhouding ≤ 1,6 blijft",
+    "Bakinhoud van het model ca. 0,9 m³ afgestreken (datasheet 1,35 m³ gestort); bakbreedte 1,35 m geschat",
+    "Kleuren: SANY-geel met donkergrijs; blauwe accentstreep als kenmerk van de elektrische uitvoering (geschat)"
+  ],
+  "openstaande_punten": [
+    "Bakkoppeling Tuimelaar/Bakstang volgt de opbouw van de referentie; of 4DVis de vierstangen zelf oplost (zoals controleer.py doet) is in de referentie niet vastgelegd: lokaal bevestigen",
+    "Transportlengte (10,565 m) en transporthoogte (3,51 m) niet getoetst: de transportstand van de giek is niet gepubliceerd",
+    "Gewone onderdelen hebben het voorvoegsel EX_SY265E_ (conventie stap 5); de Cat336E-referentie gebruikt kale namen (Onderwagen, Cabine, Rups_L). Bevestigen dat 4DVis daar niet op matcht",
+    "Officiële SANY-datasheet SY265E niet zelf ingezien (download geblokkeerd in de cloud); waarden komen uit zoekresultaten en dealerpagina's die elkaar op punten tegenspreken (zie datasheet.bronnen)"
+  ],
+  "voorbeeldstanden": {
+    "graven": {
+      "Giek": -77,
+      "Stick": 25,
+      "Bak": 10
+    },
+    "lossen": {
+      "Giek": 25,
+      "Stick": 80,
+      "Bak": 95,
+      "Bovenwagen": 60
+    }
+  },
+  "manifest_extra": {
+    "datasheet": {
+      "afmetingen": {
+        "breedte_m": 3.19,
+        "rupslengte_m": 4.638,
+        "rupscontactlengte_m": 3.833,
+        "spoorbreedte_m": 2.59,
+        "rupsplaat_m": 0.6,
+        "bovenwagenbreedte_m": 2.71,
+        "staartdraaistraal_m": 3.38,
+        "contragewicht_vrije_hoogte_m": 1.045,
+        "bodemvrijheid_m": 0.47,
+        "hoogte_boven_cabine_m": 3.255,
+        "transportlengte_m": 10.565,
+        "transporthoogte_m": 3.51
+      },
+      "werkbereik": {
+        "max_graafdiepte_m": 6.705,
+        "max_graafhoogte_m": 9.745,
+        "max_reikwijdte_grond_m": 10.225
+      },
+      "overig": {
+        "gieklengte_m": 5.9,
+        "steellengte_m": 2.95,
+        "bakinhoud_m3": 1.35,
+        "bedrijfsgewicht_kg": 28100,
+        "batterij_kwh": 600
+      },
+      "bronnen": {
+        "breedte_m": "SANY-flyer SY265E (2025-12-10) via machinepartner.no; Veenma 3,19 m; DNL 3,22 m",
+        "rupslengte_m": "SANY-flyer SY265E / DNL (totale lengte onderwagen 4.638 mm)",
+        "rupscontactlengte_m": "SANY-flyer SY265E",
+        "spoorbreedte_m": "SANY-flyer SY265E en DNL",
+        "rupsplaat_m": "SANY-flyer SY265E en Veenma (standaard 600 mm; DNL noemt 900 mm)",
+        "bovenwagenbreedte_m": "Veenma",
+        "staartdraaistraal_m": "SANY-flyer SY265E (Veenma noemt 3.105 mm, DNL 3.800 mm)",
+        "contragewicht_vrije_hoogte_m": "SANY UK SY265C (zelfde onderwagen; niet gepubliceerd voor de E)",
+        "bodemvrijheid_m": "SANY UK SY265C (niet gepubliceerd voor de E)",
+        "hoogte_boven_cabine_m": "DNL / Veenma",
+        "transportlengte_m": "SANY-flyer SY265E en DNL (Veenma 10.290 mm)",
+        "transporthoogte_m": "SANY-flyer SY265E (giek in transportstand)",
+        "max_graafdiepte_m": "DNL en Veenma",
+        "max_graafhoogte_m": "SANY-flyer SY265E / DNL (Veenma 9.815 mm)",
+        "max_reikwijdte_grond_m": "DNL en Veenma",
+        "gieklengte_m": "SANY UK SY265C; zelfde werkbereik als de E, dus aangenomen gelijk",
+        "steellengte_m": "SANY UK SY265C; aangenomen gelijk",
+        "bakinhoud_m3": "SANY-flyer SY265E (1,35/1,55 m³)",
+        "bedrijfsgewicht_kg": "SANY-flyer SY265E / DNL (andere dealers 26.500-28.000 kg)",
+        "batterij_kwh": "DNL e.a. (Veenma noemt 422 kWh LFP)"
+      }
+    },
+    "koppeling": {
+      "stick": "Stick",
+      "bak": "Bak",
+      "tuimelaar": "Tuimelaar",
+      "bakstang": "Bakstang",
+      "pen_bakstang_bak_m": [
+        0.0,
+        1.9065,
+        -6.8515
+      ]
+    }
+  }
+}

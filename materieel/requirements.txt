@@ -8,3 +8,6 @@ rtree
 fast-simplification   # decimeren
 python-fcl            # botsingstest joint-test
 cascadio              # STEP/IGES inlezen (OpenCASCADE)
+shapely               # profielen extruderen (generator)
+mapbox-earcut         # triangulatie bij extruderen
+matplotlib            # voorbeeldplaatjes

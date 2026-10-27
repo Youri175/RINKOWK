@@ -1,7 +1,7 @@
 {
-  "_uitleg": "Vaste 4DVis-eisen (stap 0/5/6/8). Pas 'extras_sleutels' aan zodra de sleutelnamen uit de referentie-GLB's bekend zijn en zet dan 'extras_sleutels_voorlopig' op false. Zet 'referentie_voorlopig' op false als voorkant/nulpunt tegen Cat336E_LongReach.glb en A40G.glb zijn geverifieerd.",
-  "doel_voorkant": "+Z",
-  "referentie_voorlopig": true,
+  "_uitleg": "Vaste 4DVis-eisen (stap 0/5/6/8), afgeleid uit de referenties Cat336E_LongReach.glb en A40G.glb: Y-up, voorkant -Z, links -X, lege wortelnode met extras.driehoeken, nulpunt op de zwenk-/knikas op de grond. Joint-assen in Blender-notatie (X dwars, Y langs, Z verticaal) zoals extras.draaias in de referentie.",
+  "doel_voorkant": "-Z",
+  "referentie_voorlopig": false,
   "typecodes": {
     "graafmachine": "EX",
     "dumper": "DU",
@@ -97,16 +97,16 @@
     }
   },
   "as_naar_gltf": {
-    "_uitleg": "Richting van de lokale joint-as in glTF (Y-up, voorkant +Z), zo gekozen dat positief = heffen/uit/open (X, dwars) en links (Z, verticaal). Te verifiëren tegen de referentie.",
+    "_uitleg": "Lokale joint-as in glTF (Y-up, voorkant -Z). Met deze richting is positief = heffen/uit/open (X) en links (Z), zoals in de referentie.",
     "X": [
-      -1,
+      1,
       0,
       0
     ],
     "Y": [
       0,
       0,
-      1
+      -1
     ],
     "Z": [
       0,
@@ -114,13 +114,20 @@
       0
     ]
   },
-  "extras_sleutels_voorlopig": true,
+  "extras_sleutels_voorlopig": false,
   "extras_sleutels": {
-    "type": "joint_type",
-    "as": "joint_as",
-    "as_gltf": "joint_as_gltf",
-    "min": "joint_min",
-    "max": "joint_max",
-    "bron": "joint_bron"
+    "_uitleg": "draaias, max_hoek_graden, straal_band, straal_steekcirkel, penafstand_* en ao_groep komen uit de referentie. min_hoek_graden bestaat daar niet (alleen max_*); toegevoegd naar hetzelfde patroon, zie openstaande_punten.",
+    "as_tekst": "draaias",
+    "min": "min_hoek_graden",
+    "max": "max_hoek_graden",
+    "min_nieuw": true
+  },
+  "cilinders": {
+    "_uitleg": "Paren <naam>_Huis / <naam>_Stang. Oorsprong in de eigen pen; lokale -Z (glTF/Godot) wijst naar de pen van de andere helft. penafstand_rust/min/max = pen-tot-penafstand.",
+    "richting_lokaal": [
+      0,
+      0,
+      -1
+    ]
   }
 }

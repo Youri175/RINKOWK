@@ -14,12 +14,12 @@
     {
       "groep": "hiërarchie",
       "status": "OK",
-      "tekst": "2 nodes, parent-child gelijk aan manifest"
+      "tekst": "3 nodes, parent-child gelijk aan manifest"
     },
     {
       "groep": "bevroren",
       "status": "OK",
-      "tekst": "alle nodes: rotatie identiteit, schaal 1 (alleen translatie)"
+      "tekst": "alle nodes schaal 1; rotatie alleen op gerichte cilinderhelften"
     },
     {
       "groep": "namen",
@@ -39,27 +39,17 @@
     {
       "groep": "nulpunt",
       "status": "OK",
-      "tekst": "laagste punt Y = 0.0000 m (grond = 0)"
+      "tekst": "grond van OV_TEST_Voet: Y = 0.0000 m"
     },
     {
       "groep": "nulpunt",
       "status": "OK",
-      "tekst": "midden onderwagen (OV_TEST_Voet) op X,Z = [0.0, 0.0]"
+      "tekst": "midden OV_TEST_Voet op X,Z = [0.0, 0.0]"
     },
     {
       "groep": "voorkant",
       "status": "WAARSCHUWING",
       "tekst": "voorkant niet automatisch te bepalen (geen Giek/Bak/Voorwagen)"
-    },
-    {
-      "groep": "voorkant",
-      "status": "WAARSCHUWING",
-      "tekst": "voorkant/nulpunt niet geverifieerd tegen de referentie-GLB's"
-    },
-    {
-      "groep": "referentie",
-      "status": "WAARSCHUWING",
-      "tekst": "geen referentie-GLB's gevonden (materieel/referentie/)"
     },
     {
       "groep": "polygonen",
@@ -84,22 +74,17 @@
     {
       "groep": "pivot",
       "status": "OK",
-      "tekst": "OV_TEST_Arm: draaipunt [0.0, 1.0, -0.5] (= manifest, binnen eigen geometrie en parent)"
+      "tekst": "OV_TEST_Arm: draaipunt [0.0, 1.0, 0.5] (= manifest, op de eigen geometrie)"
     },
     {
       "groep": "extras",
       "status": "OK",
-      "tekst": "1 joints met type/as/min/max in node-extras = manifest"
-    },
-    {
-      "groep": "extras",
-      "status": "WAARSCHUWING",
-      "tekst": "sleutelnamen joint-limieten voorlopig (referentie ontbreekt)"
+      "tekst": "1 joints met draaias/min_hoek_graden/max_hoek_graden in node-extras = manifest"
     },
     {
       "groep": "joint-test",
       "status": "OK",
-      "tekst": "contact in ruststand (verwacht bij scharnieren): OV_TEST_Voet/OV_TEST_Arm"
+      "tekst": "1 node-paren raken elkaar in ruststand (pennen, bokken, cilinders); doorsnijding = nieuw contact > 1 cm of bestaand contact > 5 cm dieper"
     },
     {
       "groep": "joint-test",
@@ -114,7 +99,7 @@
     {
       "groep": "animatie",
       "status": "OK",
-      "tekst": "test_animatie.glb: per joint 0 → min → max → 0 (4 s)"
+      "tekst": "test_animatie.glb: per joint 0 → min → max → 0, cilinders mee gericht (4 s)"
     }
   ],
   "joints": [
@@ -122,17 +107,18 @@
       "naam": "OV_TEST_Arm",
       "as": "X",
       "as_gltf": [
-        -1,
+        1,
         0,
         0
       ],
       "positief": "heffen",
+      "betekenis": "heffen",
       "min": {
         "hoek": 0,
         "zwaartepunt": [
           0.0,
           1.1,
-          0.1
+          -0.1
         ],
         "doorsnijding": []
       },
@@ -141,11 +127,90 @@
         "zwaartepunt": [
           0.0,
           1.6,
-          -0.6
+          0.6
         ],
         "doorsnijding": []
       }
     }
   ],
-  "referenties": []
+  "werkbereik": null,
+  "referenties": [
+    {
+      "bestand": "A40G.glb",
+      "afm": [
+        3.59,
+        4.196,
+        11.406
+      ],
+      "min": [
+        -1.795,
+        -0.015,
+        -4.52
+      ],
+      "max": [
+        1.795,
+        4.181,
+        6.886
+      ],
+      "voorkant": "-Z",
+      "via": "Voorwagen",
+      "wortels": [
+        "A40G"
+      ],
+      "extras_sleutels": [
+        "ao_groep",
+        "breedte_band",
+        "draaias",
+        "driehoeken",
+        "functie",
+        "knop_hoogte",
+        "lengte",
+        "max_hoek_graden",
+        "max_knik_graden",
+        "open_hoek_graden",
+        "standen_graden_naar_voren",
+        "straal_band",
+        "zwaai_graden"
+      ]
+    },
+    {
+      "bestand": "Cat336E_LongReach.glb",
+      "afm": [
+        4.08,
+        8.745,
+        19.112
+      ],
+      "min": [
+        -2.04,
+        -0.008,
+        -15.526
+      ],
+      "max": [
+        2.04,
+        8.737,
+        3.586
+      ],
+      "voorkant": "-Z",
+      "via": "Giek",
+      "wortels": [
+        "Cat336E"
+      ],
+      "extras_sleutels": [
+        "ao_groep",
+        "draaias",
+        "driehoeken",
+        "functie",
+        "kantel_assen",
+        "knop_hoogte",
+        "max_hoek_graden",
+        "open_hoek_graden",
+        "penafstand_max",
+        "penafstand_min",
+        "penafstand_rust",
+        "straal_steekcirkel",
+        "vergrendeld_hoek_graden",
+        "zwaai_graden"
+      ]
+    }
+  ]
 }

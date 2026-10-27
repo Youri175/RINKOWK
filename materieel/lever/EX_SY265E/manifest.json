@@ -1,0 +1,412 @@
+{
+  "code": "EX_SY265E",
+  "merk": "SANY",
+  "typeaanduiding": "SY265E",
+  "machinetype": "graafmachine",
+  "bron_url": "",
+  "licentie": "Eigen werk: procedureel gegenereerd uit openbare datasheetmaten; vrij te gebruiken en herdistribueren. Bevat geen merklogo's of fabrikantgeometrie.",
+  "bronformaat": "GLB (procedureel, m, Y-up)",
+  "eindformaat": "GLB",
+  "eenheid": "m",
+  "yaw_correctie_deg": 0,
+  "schaal": 1,
+  "afmetingen_m": {
+    "lengte": 10.683,
+    "breedte": 3.19,
+    "hoogte": 5.888
+  },
+  "polygonen": 3444,
+  "detailniveau": "volledig",
+  "rig": "Graafmachine",
+  "categorie": "Graafmachines",
+  "bibliotheek_csv": "EX_SY265E/model.glb;0;1;Graafmachine",
+  "joints": [
+    {
+      "naam": "Kettingwiel_L",
+      "type": "rotatie",
+      "as": "X",
+      "min": -180,
+      "max": 180,
+      "bron": "geschat",
+      "positief": "machine rijdt achteruit",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "naam": "Leiwiel_L",
+      "type": "rotatie",
+      "as": "X",
+      "min": -180,
+      "max": 180,
+      "bron": "geschat",
+      "positief": "machine rijdt achteruit",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "naam": "Kettingwiel_R",
+      "type": "rotatie",
+      "as": "X",
+      "min": -180,
+      "max": 180,
+      "bron": "geschat",
+      "positief": "machine rijdt achteruit",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "naam": "Leiwiel_R",
+      "type": "rotatie",
+      "as": "X",
+      "min": -180,
+      "max": 180,
+      "bron": "geschat",
+      "positief": "machine rijdt achteruit",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "naam": "Bovenwagen",
+      "type": "rotatie",
+      "as": "Z",
+      "min": -180,
+      "max": 180,
+      "bron": "geschat",
+      "positief": "naar links",
+      "as_gltf": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "naam": "Giek",
+      "type": "rotatie",
+      "as": "X",
+      "min": -77.0,
+      "max": 25.0,
+      "bron": "geschat",
+      "positief": "heffen",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "naam": "Stick",
+      "type": "rotatie",
+      "as": "X",
+      "min": -55,
+      "max": 80,
+      "bron": "geschat",
+      "positief": "stick uit (van de machine af)",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "naam": "Bak",
+      "type": "rotatie",
+      "as": "X",
+      "min": -50,
+      "max": 95,
+      "bron": "geschat",
+      "positief": "bak openen (lossen)",
+      "as_gltf": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "afwijkingen_van_conventie": [
+    "rig-onderdelen zonder voorvoegsel [TYPE]_[MODEL]_ (exacte 4DVis-namen voor rig Graafmachine): Kettingwiel_L, Leiwiel_L, Kettingwiel_R, Leiwiel_R, Bovenwagen, Giek, Stick, Bak, Tuimelaar, Bakstang, Giekcilinder_L_Huis, Giekcilinder_L_Stang, Giekcilinder_R_Huis, Giekcilinder_R_Stang, Stickcilinder_Huis, Stickcilinder_Stang, Bakcilinder_Huis, Bakcilinder_Stang",
+    "spiegeling: glTF is rechtshandig, Unreal linkshandig; de importer spiegelt één as. Niet in het model gecorrigeerd"
+  ],
+  "aannames": [
+    "joint-assen in Blender-notatie zoals extras.draaias in de referentie (X = dwars, Z = verticaal); positief = heffen/uit/open (X) en naar links (Z)",
+    "joint Kettingwiel_L: limieten geschat (-180..180)",
+    "joint Leiwiel_L: limieten geschat (-180..180)",
+    "joint Kettingwiel_R: limieten geschat (-180..180)",
+    "joint Leiwiel_R: limieten geschat (-180..180)",
+    "joint Bovenwagen: limieten geschat (-180..180)",
+    "joint Giek: limieten geschat (-77.0..25.0)",
+    "joint Stick: limieten geschat (-55..80)",
+    "joint Bak: limieten geschat (-50..95)",
+    "Vereenvoudigd model (optie C): maten uit de datasheet, vormen schematisch; geen fabrikantgeometrie",
+    "Giek 5,9 m en steel 2,95 m van de SY265C overgenomen: het werkbereik van de E is gelijk aan dat van de C",
+    "Werkhoeken giek -47.0..55.0° absoluut, steel [-155, -20]° en bak [-130, 15]° relatief; giekgrenzen afgestemd op max graafdiepte en -hoogte uit de datasheet",
+    "Punt-kinematica (tandpunt): diepte 6.71 m, hoogte 9.72 m, reikwijdte op de grond 10.22 m",
+    "Ligging pennen (giekvoet, cilinderpennen, bakkoppeling), cabine, accukap en contragewichthoogte geschat naar de verhoudingen in het Cat336E-referentiemodel; cilinderpennen en koppeling zo gekozen dat er over het hele bereik geen doorsnijding is en de slagverhouding ≤ 1,6 blijft",
+    "Bakinhoud van het model ca. 0,9 m³ afgestreken (datasheet 1,35 m³ gestort); bakbreedte 1,35 m geschat",
+    "Kleuren: SANY-geel met donkergrijs; blauwe accentstreep als kenmerk van de elektrische uitvoering (geschat)"
+  ],
+  "openstaande_punten": [
+    "sleutel 'min_hoek_graden' komt niet in de referentie voor (die kent alleen max_hoek_graden / max_knik_graden en cilinder-penafstanden); naar hetzelfde patroon toegevoegd, bevestigen in 4DVis",
+    "Bakkoppeling Tuimelaar/Bakstang volgt de opbouw van de referentie; of 4DVis de vierstangen zelf oplost (zoals controleer.py doet) is in de referentie niet vastgelegd: lokaal bevestigen",
+    "Transportlengte (10,565 m) en transporthoogte (3,51 m) niet getoetst: de transportstand van de giek is niet gepubliceerd",
+    "Gewone onderdelen hebben het voorvoegsel EX_SY265E_ (conventie stap 5); de Cat336E-referentie gebruikt kale namen (Onderwagen, Cabine, Rups_L). Bevestigen dat 4DVis daar niet op matcht",
+    "Officiële SANY-datasheet SY265E niet zelf ingezien (download geblokkeerd in de cloud); waarden komen uit zoekresultaten en dealerpagina's die elkaar op punten tegenspreken (zie datasheet.bronnen)"
+  ],
+  "wortel": "EX_SY265E",
+  "nulpunt_onderdeel": "EX_SY265E_Onderwagen",
+  "hierarchie": {
+    "EX_SY265E": null,
+    "EX_SY265E_Onderwagen": "EX_SY265E",
+    "EX_SY265E_Rups_L": "EX_SY265E_Onderwagen",
+    "Kettingwiel_L": "EX_SY265E_Onderwagen",
+    "Leiwiel_L": "EX_SY265E_Onderwagen",
+    "EX_SY265E_Rups_R": "EX_SY265E_Onderwagen",
+    "Kettingwiel_R": "EX_SY265E_Onderwagen",
+    "Leiwiel_R": "EX_SY265E_Onderwagen",
+    "Bovenwagen": "EX_SY265E",
+    "EX_SY265E_Cabine": "Bovenwagen",
+    "EX_SY265E_Cabine_Glas": "Bovenwagen",
+    "Giek": "Bovenwagen",
+    "Stick": "Giek",
+    "Bak": "Stick",
+    "Tuimelaar": "Stick",
+    "Bakstang": "Tuimelaar",
+    "Giekcilinder_L_Huis": "Bovenwagen",
+    "Giekcilinder_L_Stang": "Giek",
+    "Giekcilinder_R_Huis": "Bovenwagen",
+    "Giekcilinder_R_Stang": "Giek",
+    "Stickcilinder_Huis": "Giek",
+    "Stickcilinder_Stang": "Stick",
+    "Bakcilinder_Huis": "Stick",
+    "Bakcilinder_Stang": "Tuimelaar"
+  },
+  "draaipunten_m": {
+    "EX_SY265E_Onderwagen": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "EX_SY265E_Rups_L": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Kettingwiel_L": [
+      -0.925,
+      0.4025,
+      1.9165
+    ],
+    "Leiwiel_L": [
+      -0.925,
+      0.4025,
+      -1.9165
+    ],
+    "EX_SY265E_Rups_R": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Kettingwiel_R": [
+      0.925,
+      0.4025,
+      1.9165
+    ],
+    "Leiwiel_R": [
+      0.925,
+      0.4025,
+      -1.9165
+    ],
+    "Bovenwagen": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "EX_SY265E_Cabine": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "EX_SY265E_Cabine_Glas": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Giek": [
+      0.15,
+      2.05,
+      -0.35
+    ],
+    "Stick": [
+      0.15,
+      5.0,
+      -5.4595
+    ],
+    "Bak": [
+      0.15,
+      2.2279,
+      -6.4685
+    ],
+    "Tuimelaar": [
+      0.15,
+      2.8175,
+      -6.6264
+    ],
+    "Bakstang": [
+      0.15,
+      2.5583,
+      -7.2225
+    ],
+    "Giekcilinder_L_Huis": [
+      -0.25,
+      1.62,
+      -1.25
+    ],
+    "Giekcilinder_L_Stang": [
+      -0.25,
+      3.9304,
+      -2.7285
+    ],
+    "Giekcilinder_R_Huis": [
+      0.55,
+      1.62,
+      -1.25
+    ],
+    "Giekcilinder_R_Stang": [
+      0.55,
+      3.9304,
+      -2.7285
+    ],
+    "Stickcilinder_Huis": [
+      0.15,
+      4.7152,
+      -1.9867
+    ],
+    "Stickcilinder_Stang": [
+      0.15,
+      5.7995,
+      -5.4316
+    ],
+    "Bakcilinder_Huis": [
+      0.15,
+      4.7208,
+      -6.0081
+    ],
+    "Bakcilinder_Stang": [
+      0.15,
+      2.5583,
+      -7.2225
+    ]
+  },
+  "cilinders": [
+    {
+      "naam": "Giekcilinder_L",
+      "huis": "Giekcilinder_L_Huis",
+      "stang": "Giekcilinder_L_Stang",
+      "joint": "Giek",
+      "penafstand_rust": 2.743,
+      "penafstand_min": 2.0346,
+      "penafstand_max": 3.173
+    },
+    {
+      "naam": "Giekcilinder_R",
+      "huis": "Giekcilinder_R_Huis",
+      "stang": "Giekcilinder_R_Stang",
+      "joint": "Giek",
+      "penafstand_rust": 2.743,
+      "penafstand_min": 2.0346,
+      "penafstand_max": 3.173
+    },
+    {
+      "naam": "Stickcilinder",
+      "huis": "Stickcilinder_Huis",
+      "stang": "Stickcilinder_Stang",
+      "joint": "Stick",
+      "penafstand_rust": 3.6115,
+      "penafstand_min": 2.7098,
+      "penafstand_max": 4.1826
+    },
+    {
+      "naam": "Bakcilinder",
+      "huis": "Bakcilinder_Huis",
+      "stang": "Bakcilinder_Stang",
+      "joint": "Bak",
+      "penafstand_rust": 2.4802,
+      "penafstand_min": 1.7019,
+      "penafstand_max": 2.6339
+    }
+  ],
+  "textures": [],
+  "gebouwd": "2026-10-27",
+  "datasheet": {
+    "afmetingen": {
+      "breedte_m": 3.19,
+      "rupslengte_m": 4.638,
+      "rupscontactlengte_m": 3.833,
+      "spoorbreedte_m": 2.59,
+      "rupsplaat_m": 0.6,
+      "bovenwagenbreedte_m": 2.71,
+      "staartdraaistraal_m": 3.38,
+      "contragewicht_vrije_hoogte_m": 1.045,
+      "bodemvrijheid_m": 0.47,
+      "hoogte_boven_cabine_m": 3.255,
+      "transportlengte_m": 10.565,
+      "transporthoogte_m": 3.51
+    },
+    "werkbereik": {
+      "max_graafdiepte_m": 6.705,
+      "max_graafhoogte_m": 9.745,
+      "max_reikwijdte_grond_m": 10.225
+    },
+    "overig": {
+      "gieklengte_m": 5.9,
+      "steellengte_m": 2.95,
+      "bakinhoud_m3": 1.35,
+      "bedrijfsgewicht_kg": 28100,
+      "batterij_kwh": 600
+    },
+    "bronnen": {
+      "breedte_m": "SANY-flyer SY265E (2025-12-10) via machinepartner.no; Veenma 3,19 m; DNL 3,22 m",
+      "rupslengte_m": "SANY-flyer SY265E / DNL (totale lengte onderwagen 4.638 mm)",
+      "rupscontactlengte_m": "SANY-flyer SY265E",
+      "spoorbreedte_m": "SANY-flyer SY265E en DNL",
+      "rupsplaat_m": "SANY-flyer SY265E en Veenma (standaard 600 mm; DNL noemt 900 mm)",
+      "bovenwagenbreedte_m": "Veenma",
+      "staartdraaistraal_m": "SANY-flyer SY265E (Veenma noemt 3.105 mm, DNL 3.800 mm)",
+      "contragewicht_vrije_hoogte_m": "SANY UK SY265C (zelfde onderwagen; niet gepubliceerd voor de E)",
+      "bodemvrijheid_m": "SANY UK SY265C (niet gepubliceerd voor de E)",
+      "hoogte_boven_cabine_m": "DNL / Veenma",
+      "transportlengte_m": "SANY-flyer SY265E en DNL (Veenma 10.290 mm)",
+      "transporthoogte_m": "SANY-flyer SY265E (giek in transportstand)",
+      "max_graafdiepte_m": "DNL en Veenma",
+      "max_graafhoogte_m": "SANY-flyer SY265E / DNL (Veenma 9.815 mm)",
+      "max_reikwijdte_grond_m": "DNL en Veenma",
+      "gieklengte_m": "SANY UK SY265C; zelfde werkbereik als de E, dus aangenomen gelijk",
+      "steellengte_m": "SANY UK SY265C; aangenomen gelijk",
+      "bakinhoud_m3": "SANY-flyer SY265E (1,35/1,55 m³)",
+      "bedrijfsgewicht_kg": "SANY-flyer SY265E / DNL (andere dealers 26.500-28.000 kg)",
+      "batterij_kwh": "DNL e.a. (Veenma noemt 422 kWh LFP)"
+    }
+  },
+  "koppeling": {
+    "stick": "Stick",
+    "bak": "Bak",
+    "tuimelaar": "Tuimelaar",
+    "bakstang": "Bakstang",
+    "pen_bakstang_bak_m": [
+      0.0,
+      1.9065,
+      -6.8515
+    ]
+  }
+}

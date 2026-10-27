@@ -50,17 +50,17 @@ def nareken(glb):
     sc = lees_glb(glb)
     fouten = []
     namen = [n.naam for n in sc.nodes]
-    if namen != ["OV_TEST_Voet", "OV_TEST_Arm"]:
+    if namen != ["OV_TEST", "OV_TEST_Voet", "OV_TEST_Arm"]:
         fouten.append(f"nodes {namen}")
-    voet, arm = sc.node("OV_TEST_Voet"), sc.node("OV_TEST_Arm")
-    if arm.parent != voet.index or sc.wortels != [voet.index]:
-        fouten.append("hiërarchie Voet -> Arm klopt niet")
+    wortel, voet, arm = sc.node("OV_TEST"), sc.node("OV_TEST_Voet"), sc.node("OV_TEST_Arm")
+    if arm.parent != voet.index or voet.parent != wortel.index or sc.wortels != [wortel.index]:
+        fouten.append("hiërarchie (leeg) OV_TEST -> Voet -> Arm klopt niet")
     wm = sc.wereld_matrices()
-    # verwachting: bron (-500, 0, 1000) mm rond de kubus -> (0, 1.0, -0.5) m, voorkant +Z
-    if not np.allclose(wm[arm.index][:3, 3], [0, 1.0, -0.5], atol=1e-4):
-        fouten.append(f"pivot arm {wm[arm.index][:3, 3]}, verwacht [0, 1, -0.5]")
+    # verwachting: bron (-500, 0, 1000) mm (achterkant kubus) -> (0, 1.0, +0.5) m, voorkant -Z
+    if not np.allclose(wm[arm.index][:3, 3], [0, 1.0, 0.5], atol=1e-4):
+        fouten.append(f"pivot arm {wm[arm.index][:3, 3]}, verwacht [0, 1, 0.5]")
     lok = np.vstack([p.posities for p in sc.meshes[arm.mesh]])
-    if not (np.allclose(lok.min(0), [-0.1, 0, 0], atol=1e-4) and np.allclose(lok.max(0), [0.1, 0.2, 1.2], atol=1e-4)):
+    if not (np.allclose(lok.min(0), [-0.1, 0, -1.2], atol=1e-4) and np.allclose(lok.max(0), [0.1, 0.2, 0], atol=1e-4)):
         fouten.append(f"arm-geometrie niet relatief aan draaipunt: {lok.min(0)} {lok.max(0)}")
     vp = np.vstack([p.posities for p in sc.meshes[voet.mesh]])
     if not (np.allclose(vp.min(0), [-0.5, 0, -0.5], atol=1e-4) and np.allclose(vp.max(0), [0.5, 1, 0.5], atol=1e-4)):
@@ -68,7 +68,7 @@ def nareken(glb):
     if sum(len(p.indices) for p in sc.meshes[voet.mesh]) != 12:
         fouten.append("dubbel object of interne geometrie niet verwijderd (kubus heeft geen 12 driehoeken)")
     for n in sc.nodes:
-        if n.rotatie or n.schaal or n.heeft_matrix:
+        if n.rotatie or n.schaal or n.heeft_matrix:  # testmodel heeft geen cilinders
             fouten.append(f"{n.naam}: rotatie/schaal niet bevroren")
     return fouten
 

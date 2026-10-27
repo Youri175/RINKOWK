@@ -1,6 +1,7 @@
 # Repo is publiek: geen licentie-beperkte bronnen of leveringen committen.
 lever/*
 !lever/OV_TEST/
+!lever/EX_SY265E/
 referentie/*
 !referentie/README.md
 bronnen/

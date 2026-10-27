@@ -1,0 +1,5 @@
+bron: 87 mesh-instanties, 3444 driehoeken
+bron-afmetingen [3.19, 5.888, 10.683] eenheden -> [3.19, 5.888, 10.683] m
+verwijderd via patroon: 0, dubbele objecten: 0
+polygonen: 3444 -> 3444 (doel 50000)
+geschreven: /home/user/RINKOWK/materieel/lever/EX_SY265E/model.glb
