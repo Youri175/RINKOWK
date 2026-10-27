@@ -1,0 +1,67 @@
+{
+  "code": "OV_TEST",
+  "merk": "Test",
+  "typeaanduiding": "Kubus-testmodel",
+  "machinetype": "overig",
+  "bron_url": "",
+  "licentie": "Eigen werk, gegenereerd door tools/maak_testmodel.py; vrij te gebruiken en herdistribueren",
+  "bronformaat": "GLB (mm, Z-up)",
+  "eindformaat": "GLB",
+  "eenheid": "m",
+  "yaw_correctie_deg": 0,
+  "schaal": 1,
+  "afmetingen_m": {
+    "lengte": 1.2,
+    "breedte": 1.0,
+    "hoogte": 1.2
+  },
+  "polygonen": 24,
+  "detailniveau": "volledig",
+  "rig": "",
+  "categorie": "Overig",
+  "bibliotheek_csv": "OV_TEST/model.glb;0;1;",
+  "joints": [
+    {
+      "naam": "OV_TEST_Arm",
+      "type": "rotatie",
+      "as": "X",
+      "min": 0,
+      "max": 90,
+      "bron": "geschat"
+    }
+  ],
+  "afwijkingen_van_conventie": [
+    "bron in auto-0.001: geschaald met factor 0.001 naar meter",
+    "bron-oriëntatie up +Z, voorkant +X: gedraaid naar Y-up, voorkant +Z",
+    "midden onderwagen op de grond lag in de bron op [-1.5, 0.25, 3.0] m (na eenheid/as-conversie): naar 0 verschoven",
+    "spiegeling: glTF is rechtshandig, Unreal linkshandig; de importer spiegelt één as. Niet in het model gecorrigeerd"
+  ],
+  "aannames": [
+    "bron-eenheid automatisch bepaald: grootste maat 1200.0 eenheden -> factor 0.001",
+    "joint-assen in de 4DVis-notatie (Z = verticaal, X = dwars, Y = langs); de richting in glTF staat in extras.joint_as_gltf, zo gekozen dat positief = heffen/open (X) en links (Z)",
+    "joint OV_TEST_Arm: limieten geschat (0..90)"
+  ],
+  "openstaande_punten": [
+    "rig ontbreekt in 4DVis voor machinetype 'overig': keten en joints zitten in het model en dit manifest",
+    "sleutelnamen voor joint-limieten in node-extras zijn voorlopig (joint_type, joint_as, joint_min, joint_max); referentie-GLB's niet beschikbaar om ze over te nemen",
+    "referentiemodellen (Cat336E_LongReach.glb, A40G.glb) niet beschikbaar: voorkant +Z en nulpunt volgen de glTF-conventie, niet geverifieerd tegen de referentie"
+  ],
+  "hierarchie": {
+    "OV_TEST_Voet": null,
+    "OV_TEST_Arm": "OV_TEST_Voet"
+  },
+  "draaipunten_m": {
+    "OV_TEST_Voet": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "OV_TEST_Arm": [
+      0.0,
+      1.0,
+      -0.5
+    ]
+  },
+  "textures": [],
+  "gebouwd": "2026-10-27"
+}

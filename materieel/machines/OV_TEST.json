@@ -1,0 +1,26 @@
+{
+  "_uitleg": "Stap 0-testmodel: kubus + tweedelige hiërarchie. De bron is bewust 'fout' aangeleverd (mm, Z-up, voorkant +X, nulpunt verschoven, dubbel object, interne geometrie) zodat de pijplijn elke correctie moet doen.",
+  "merk": "Test",
+  "typeaanduiding": "Kubus-testmodel",
+  "machinetype": "overig",
+  "modelcode": "TEST",
+  "detailniveau": "volledig",
+  "bron": {
+    "bestand": "../testmodel/bron_testmodel.glb",
+    "url": "",
+    "licentie": "Eigen werk, gegenereerd door tools/maak_testmodel.py; vrij te gebruiken en herdistribueren",
+    "formaat": "GLB (mm, Z-up)"
+  },
+  "bron_eenheid": "auto",
+  "bron_up": "+Z",
+  "bron_voorkant": "+X",
+  "verwijder_intern": true,
+  "doel_polygonen": 50000,
+  "onderdelen": [
+    {"naam": "OV_TEST_Voet", "bron": ["Voet"]},
+    {"naam": "OV_TEST_Arm", "parent": "OV_TEST_Voet", "bron": ["Arm"],
+     "draaipunt": {"bron": [2500, -1500, 1250]},
+     "joint": {"type": "rotatie", "as": "X", "min": 0, "max": 90, "bron": "geschat"}}
+  ],
+  "behoud": ["OV_TEST_Arm"]
+}

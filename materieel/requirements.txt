@@ -1,0 +1,10 @@
+numpy
+trimesh
+pygltflib
+pillow
+scipy
+networkx
+rtree
+fast-simplification   # decimeren
+python-fcl            # botsingstest joint-test
+cascadio              # STEP/IGES inlezen (OpenCASCADE)

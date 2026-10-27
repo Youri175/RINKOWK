@@ -1,0 +1,151 @@
+{
+  "code": "OV_TEST",
+  "resultaten": [
+    {
+      "groep": "manifest",
+      "status": "OK",
+      "tekst": "alle sjabloonsleutels aanwezig"
+    },
+    {
+      "groep": "manifest",
+      "status": "OK",
+      "tekst": "bibliotheek_csv: OV_TEST/model.glb;0;1;"
+    },
+    {
+      "groep": "hiërarchie",
+      "status": "OK",
+      "tekst": "2 nodes, parent-child gelijk aan manifest"
+    },
+    {
+      "groep": "bevroren",
+      "status": "OK",
+      "tekst": "alle nodes: rotatie identiteit, schaal 1 (alleen translatie)"
+    },
+    {
+      "groep": "namen",
+      "status": "OK",
+      "tekst": "alle namen uniek"
+    },
+    {
+      "groep": "afmetingen",
+      "status": "OK",
+      "tekst": "bbox breedte(X) 1.000 × hoogte(Y) 1.200 × lengte(Z) 1.200 m"
+    },
+    {
+      "groep": "afmetingen",
+      "status": "OK",
+      "tekst": "manifest-afmetingen wijken max 0.000 m af"
+    },
+    {
+      "groep": "nulpunt",
+      "status": "OK",
+      "tekst": "laagste punt Y = 0.0000 m (grond = 0)"
+    },
+    {
+      "groep": "nulpunt",
+      "status": "OK",
+      "tekst": "midden onderwagen (OV_TEST_Voet) op X,Z = [0.0, 0.0]"
+    },
+    {
+      "groep": "voorkant",
+      "status": "WAARSCHUWING",
+      "tekst": "voorkant niet automatisch te bepalen (geen Giek/Bak/Voorwagen)"
+    },
+    {
+      "groep": "voorkant",
+      "status": "WAARSCHUWING",
+      "tekst": "voorkant/nulpunt niet geverifieerd tegen de referentie-GLB's"
+    },
+    {
+      "groep": "referentie",
+      "status": "WAARSCHUWING",
+      "tekst": "geen referentie-GLB's gevonden (materieel/referentie/)"
+    },
+    {
+      "groep": "polygonen",
+      "status": "OK",
+      "tekst": "24 driehoeken (doel ≤ 50000)"
+    },
+    {
+      "groep": "normalen",
+      "status": "OK",
+      "tekst": "alle primitieven hebben eenheidsnormalen, consistent met de winding"
+    },
+    {
+      "groep": "faces",
+      "status": "OK",
+      "tekst": "alle meshes gesloten (geen open randen)"
+    },
+    {
+      "groep": "texturen",
+      "status": "OK",
+      "tekst": "geen texturen gebruikt"
+    },
+    {
+      "groep": "pivot",
+      "status": "OK",
+      "tekst": "OV_TEST_Arm: draaipunt [0.0, 1.0, -0.5] (= manifest, binnen eigen geometrie en parent)"
+    },
+    {
+      "groep": "extras",
+      "status": "OK",
+      "tekst": "1 joints met type/as/min/max in node-extras = manifest"
+    },
+    {
+      "groep": "extras",
+      "status": "WAARSCHUWING",
+      "tekst": "sleutelnamen joint-limieten voorlopig (referentie ontbreekt)"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "contact in ruststand (verwacht bij scharnieren): OV_TEST_Voet/OV_TEST_Arm"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "OV_TEST_Arm: geen nieuwe doorsnijding op min 0 / max 90; positief = heffen"
+    },
+    {
+      "groep": "joint-test",
+      "status": "OK",
+      "tekst": "geen vervorming mogelijk: alle nodes rigide (schaal 1, geen skinning)"
+    },
+    {
+      "groep": "animatie",
+      "status": "OK",
+      "tekst": "test_animatie.glb: per joint 0 → min → max → 0 (4 s)"
+    }
+  ],
+  "joints": [
+    {
+      "naam": "OV_TEST_Arm",
+      "as": "X",
+      "as_gltf": [
+        -1,
+        0,
+        0
+      ],
+      "positief": "heffen",
+      "min": {
+        "hoek": 0,
+        "zwaartepunt": [
+          0.0,
+          1.1,
+          0.1
+        ],
+        "doorsnijding": []
+      },
+      "max": {
+        "hoek": 90,
+        "zwaartepunt": [
+          0.0,
+          1.6,
+          -0.6
+        ],
+        "doorsnijding": []
+      }
+    }
+  ],
+  "referenties": []
+}

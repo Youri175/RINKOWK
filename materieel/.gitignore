@@ -1,0 +1,7 @@
+# Repo is publiek: geen licentie-beperkte bronnen of leveringen committen.
+lever/*
+!lever/OV_TEST/
+referentie/*
+!referentie/README.md
+bronnen/
+__pycache__/

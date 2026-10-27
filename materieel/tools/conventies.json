@@ -1,0 +1,126 @@
+{
+  "_uitleg": "Vaste 4DVis-eisen (stap 0/5/6/8). Pas 'extras_sleutels' aan zodra de sleutelnamen uit de referentie-GLB's bekend zijn en zet dan 'extras_sleutels_voorlopig' op false. Zet 'referentie_voorlopig' op false als voorkant/nulpunt tegen Cat336E_LongReach.glb en A40G.glb zijn geverifieerd.",
+  "doel_voorkant": "+Z",
+  "referentie_voorlopig": true,
+  "typecodes": {
+    "graafmachine": "EX",
+    "dumper": "DU",
+    "hijskraan": "KR",
+    "wiellader": "WL",
+    "overig": "OV"
+  },
+  "standaard_rig": {
+    "graafmachine": "Graafmachine",
+    "dumper": "Knikdumper"
+  },
+  "categorieen": {
+    "graafmachine": "Graafmachines",
+    "dumper": "Dumpers en kiepwagens",
+    "hijskraan": "Kranen",
+    "wiellader": "Laadschoppen en shovels",
+    "overig": "Overig"
+  },
+  "categorie_lijst": [
+    "Graafmachines",
+    "Dumpers en kiepwagens",
+    "Kranen",
+    "Laadschoppen en shovels",
+    "Heien en funderen",
+    "Beton",
+    "Wegenbouw",
+    "Hulpmaterieel",
+    "Overig"
+  ],
+  "rignamen": {
+    "Graafmachine": {
+      "verplicht": [
+        "Bovenwagen",
+        "Giek",
+        "Stick",
+        "Bak"
+      ],
+      "optioneel": [
+        "Tuimelaar",
+        "Bakstang"
+      ],
+      "optioneel_patronen": [
+        "^.+_Huis$",
+        "^.+_Stang$",
+        "^Kettingwiel_.+$",
+        "^Leiwiel_.+$"
+      ],
+      "keten": [
+        [
+          "Bovenwagen",
+          "Giek"
+        ],
+        [
+          "Giek",
+          "Stick"
+        ],
+        [
+          "Stick",
+          "Bak"
+        ]
+      ],
+      "assen": {
+        "Bovenwagen": "Z",
+        "Giek": "X",
+        "Stick": "X",
+        "Bak": "X"
+      }
+    },
+    "Knikdumper": {
+      "verplicht": [
+        "Voorwagen",
+        "Laadbak",
+        "Lading"
+      ],
+      "optioneel": [
+        "Achterwagen"
+      ],
+      "optioneel_patronen": [
+        "^Wiel_.+$",
+        "^Kiepcilinder.*$",
+        "^Stuurcilinder.*$"
+      ],
+      "keten": [
+        [
+          "Laadbak",
+          "Lading"
+        ]
+      ],
+      "assen": {
+        "Laadbak": "X",
+        "Achterwagen": "Z"
+      }
+    }
+  },
+  "as_naar_gltf": {
+    "_uitleg": "Richting van de lokale joint-as in glTF (Y-up, voorkant +Z), zo gekozen dat positief = heffen/uit/open (X, dwars) en links (Z, verticaal). Te verifiëren tegen de referentie.",
+    "X": [
+      -1,
+      0,
+      0
+    ],
+    "Y": [
+      0,
+      0,
+      1
+    ],
+    "Z": [
+      0,
+      1,
+      0
+    ]
+  },
+  "extras_sleutels_voorlopig": true,
+  "extras_sleutels": {
+    "type": "joint_type",
+    "as": "joint_as",
+    "as_gltf": "joint_as_gltf",
+    "min": "joint_min",
+    "max": "joint_max",
+    "bron": "joint_bron"
+  }
+}

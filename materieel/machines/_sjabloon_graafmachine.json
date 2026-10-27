@@ -1,0 +1,32 @@
+{
+  "_uitleg": "Sjabloon. Vul merk/type/bron in, pas de bron-patronen (regex op node-/geometrienaam in de bron) aan na inspectie, en zet draaipunten op de echte pennen. Draaipunt: [x,y,z] in m (doel), {\"bron\": [x,y,z]} in bron-eenheden/-assen, of {\"bbox\": [u,v,w], \"van\": \"<onderdeel>\"} met u,v,w in -1..1 van de bounding box (doel-assen: X links, Y omhoog, Z voor). Limieten uit datasheet: \"bron\": \"datasheet\", anders \"geschat\".",
+  "merk": "",
+  "typeaanduiding": "",
+  "machinetype": "graafmachine",
+  "modelcode": "",
+  "detailniveau": "volledig",
+  "bron": {"bestand": "", "url": "", "licentie": "", "formaat": ""},
+  "bron_eenheid": "auto",
+  "bron_up": "+Z",
+  "bron_voorkant": "+X",
+  "verwijder": ["(?i)bolt|bout|moer|nut|washer|seal"],
+  "verwijder_intern": true,
+  "doel_polygonen": 50000,
+  "onderdelen": [
+    {"naam": "EX_XXX_Onderwagen", "bron": ["track|rups|undercarriage|onderwagen"]},
+    {"naam": "Kettingwiel_L", "parent": "EX_XXX_Onderwagen", "bron": ["sprocket.*l"], "draaipunt": {"bbox": [0, 0, 0]},
+     "joint": {"as": "X", "min": -360, "max": 360, "bron": "geschat"}, "wiel": {"straal_band": "auto", "straal_steekcirkel": null}},
+    {"naam": "Kettingwiel_R", "parent": "EX_XXX_Onderwagen", "bron": ["sprocket.*r"], "draaipunt": {"bbox": [0, 0, 0]},
+     "joint": {"as": "X", "min": -360, "max": 360, "bron": "geschat"}, "wiel": {"straal_band": "auto", "straal_steekcirkel": null}},
+    {"naam": "Bovenwagen", "parent": "EX_XXX_Onderwagen", "bron": ["upper|superstructure|bovenwagen|counterweight"],
+     "draaipunt": [0, 1.0, 0], "joint": {"as": "Z", "min": -180, "max": 180, "bron": "datasheet"}},
+    {"naam": "EX_XXX_Cabine", "parent": "Bovenwagen", "bron": ["cab"]},
+    {"naam": "Giek", "parent": "Bovenwagen", "bron": ["boom|giek"], "draaipunt": {"bron": [0, 0, 0]},
+     "joint": {"as": "X", "min": -20, "max": 60, "bron": "geschat"}},
+    {"naam": "Stick", "parent": "Giek", "bron": ["stick|arm"], "draaipunt": {"bron": [0, 0, 0]},
+     "joint": {"as": "X", "min": -30, "max": 120, "bron": "geschat"}},
+    {"naam": "Bak", "parent": "Stick", "bron": ["bucket|bak"], "draaipunt": {"bron": [0, 0, 0]},
+     "joint": {"as": "X", "min": -40, "max": 140, "bron": "geschat"}}
+  ],
+  "behoud": ["EX_XXX_Cabine", "Giek", "Stick", "Bak"]
+}

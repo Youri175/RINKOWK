@@ -1,0 +1,26 @@
+{
+  "_uitleg": "Sjabloon knikdumper (rig Knikdumper). Zie _sjabloon_graafmachine.json voor de draaipuntnotatie. Het nulpunt ligt op het midden van 'nulpunt_onderdeel' op de grond.",
+  "merk": "",
+  "typeaanduiding": "",
+  "machinetype": "dumper",
+  "modelcode": "",
+  "detailniveau": "volledig",
+  "bron": {"bestand": "", "url": "", "licentie": "", "formaat": ""},
+  "bron_eenheid": "auto",
+  "bron_up": "+Z",
+  "bron_voorkant": "+X",
+  "verwijder_intern": true,
+  "doel_polygonen": 50000,
+  "nulpunt_onderdeel": "Achterwagen",
+  "onderdelen": [
+    {"naam": "Achterwagen", "bron": ["rear|achter"]},
+    {"naam": "Voorwagen", "parent": "Achterwagen", "bron": ["front|voor|cab"], "draaipunt": {"bron": [0, 0, 0]},
+     "joint": {"as": "Z", "min": -45, "max": 45, "bron": "geschat"}},
+    {"naam": "Laadbak", "parent": "Achterwagen", "bron": ["body|dump|bak"], "draaipunt": {"bbox": [0, -1, -1], "van": "Laadbak"},
+     "joint": {"as": "X", "min": 0, "max": 70, "bron": "geschat"}},
+    {"naam": "Lading", "parent": "Laadbak", "bron": ["load|lading"]},
+    {"naam": "Wiel_VL", "parent": "Voorwagen", "bron": ["wheel.*fl"], "draaipunt": {"bbox": [0, 0, 0]},
+     "joint": {"as": "X", "min": -360, "max": 360, "bron": "geschat"}, "wiel": {"straal_band": "auto", "straal_steekcirkel": null}}
+  ],
+  "behoud": ["Voorwagen", "Laadbak"]
+}
