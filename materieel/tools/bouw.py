@@ -311,7 +311,8 @@ def vertex_normalen(pos, faces, hoek_deg=30.0):
         n = np.vstack([n, fn[rijen]])
         f = f.copy()
         f[rijen, kol] = nieuw
-    n = n / np.maximum(np.linalg.norm(n, axis=1), 1e-12)[:, None]
+    nl = np.linalg.norm(n, axis=1)
+    n = np.where(nl[:, None] > 1e-9, n / np.maximum(nl, 1e-12)[:, None], [0.0, 1.0, 0.0])  # losse hoekpunten
     return v, f, n
 
 
@@ -644,6 +645,11 @@ def bouw(cfg_pad, uitmap, controle=True):
         if not np.allclose(r_lok, np.eye(3), atol=1e-9):
             d.rotatie = matrix_naar_quat(r_lok)
         for pos, faces, uv, mi, _ in prims[n]:
+            v_ = pos[faces]                     # vlakken zonder oppervlak (na decimeren) weg
+            opp = np.linalg.norm(np.cross(v_[:, 1] - v_[:, 0], v_[:, 2] - v_[:, 0]), axis=1)
+            faces = faces[opp > 1e-10]
+            if not len(faces):
+                continue
             lp = (pos - dp[n]) @ Rw[n]          # = Rw^T (p - draaipunt)
             if uv is None:
                 lp, faces, nrm = vertex_normalen(lp, faces)
@@ -769,6 +775,7 @@ def bouw(cfg_pad, uitmap, controle=True):
         "textures": mats.texture_bestanden,
         "gebouwd": datetime.date.today().isoformat(),
         **({"volgt": cfg["volgt"]} if cfg.get("volgt") else {}),
+        **({"botsing_toegestaan": cfg["botsing_toegestaan"]} if cfg.get("botsing_toegestaan") else {}),
         **cfg.get("manifest_extra", {}),
     }
     if rignamen - set(namen) and rig:

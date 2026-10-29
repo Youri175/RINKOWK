@@ -1,5 +1,28 @@
 bron: 87 mesh-instanties, 3444 driehoeken
 bron-afmetingen [3.19, 5.888, 10.683] eenheden -> [3.19, 5.888, 10.683] m
-verwijderd via patroon: 0, dubbele objecten: 0
+verwijderd via patroon: 0, dubbele objecten: 0, buiten behoud_regio: 0
+  EX_SY265E_Onderwagen: 3 stukken, 152 driehoeken
+  EX_SY265E_Rups_L: 2 stukken, 176 driehoeken
+  Kettingwiel_L: 1 stukken, 84 driehoeken
+  Leiwiel_L: 1 stukken, 124 driehoeken
+  EX_SY265E_Rups_R: 2 stukken, 176 driehoeken
+  Kettingwiel_R: 1 stukken, 84 driehoeken
+  Leiwiel_R: 1 stukken, 124 driehoeken
+  Bovenwagen: 15 stukken, 420 driehoeken
+  EX_SY265E_Cabine: 7 stukken, 84 driehoeken
+  EX_SY265E_Cabine_Glas: 1 stukken, 12 driehoeken
+  Giek: 10 stukken, 276 driehoeken
+  Stick: 9 stukken, 264 driehoeken
+  Bak: 11 stukken, 204 driehoeken
+  Tuimelaar: 4 stukken, 152 driehoeken
+  Bakstang: 3 stukken, 88 driehoeken
+  Giekcilinder_L_Huis: 2 stukken, 128 driehoeken
+  Giekcilinder_L_Stang: 2 stukken, 128 driehoeken
+  Giekcilinder_R_Huis: 2 stukken, 128 driehoeken
+  Giekcilinder_R_Stang: 2 stukken, 128 driehoeken
+  Stickcilinder_Huis: 2 stukken, 128 driehoeken
+  Stickcilinder_Stang: 2 stukken, 128 driehoeken
+  Bakcilinder_Huis: 2 stukken, 128 driehoeken
+  Bakcilinder_Stang: 2 stukken, 128 driehoeken
 polygonen: 3444 -> 3444 (doel 50000)
 geschreven: /home/user/RINKOWK/materieel/lever/EX_SY265E/model.glb

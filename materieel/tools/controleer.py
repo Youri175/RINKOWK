@@ -634,6 +634,9 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
                            f"doorsnijding = nieuw contact > {TOL_DOORSNIJDING * 100:.0f} cm of bestaand contact "
                            f"> {TOL_BESTAAND * 100:.0f} cm dieper")
 
+    # bekende, verklaarde contacten uit het manifest (bv. wielen in de rupsketting): gemeld, geen waarschuwing
+    toegestaan = {frozenset(x["paar"]): x["reden"] for x in man.get("botsing_toegestaan", [])}
+    toegestaan_gezien = {}
     links = np.cross([0, 1, 0], np.array(ASSEN_VOOR[CONV["doel_voorkant"]]))  # links = up × voor
     for j in joints:
         n = sc.nodes[j["index"]]
@@ -663,7 +666,12 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
                     if a not in veranderd and b not in veranderd:
                         continue
                     per_paar[(a, b)] = max(per_paar.get((a, b), 0.0), diepte)
-                nieuw += [f"{sc.nodes[a].naam}/{sc.nodes[b].naam} ({d_:.3f} m)" for (a, b), d_ in sorted(per_paar.items())]
+                for (a, b), d_ in sorted(per_paar.items()):
+                    reden = toegestaan.get(frozenset((sc.nodes[a].naam, sc.nodes[b].naam)))
+                    if reden:
+                        toegestaan_gezien.setdefault((sc.nodes[a].naam, sc.nodes[b].naam, reden), []).append(round(d_, 3))
+                    else:
+                        nieuw.append(f"{sc.nodes[a].naam}/{sc.nodes[b].naam} ({d_:.3f} m)")
             if len(bp) and bp[:, 1].min() < -TOL_GROND and zonder_voorvoegsel(j["naam"]) not in ("Giek", "Stick", "Bak"):
                 nieuw.append(f"onder maaiveld (Y={bp[:, 1].min():.2f})")
             standen[label] = {"hoek": j[label], "zwaartepunt": c.round(3).tolist(), "doorsnijding": nieuw}
@@ -687,6 +695,8 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
                           f"op min {j['min']} / max {j['max']}; positief = {teken}")
         if teken in ("zakken", "rechts") and n.naam not in ("Bak",):
             R.warn("joint-test", f"{n.naam}: positieve hoek = {teken}; afspraak is heffen/uit/links")
+    for (a, b, reden), dieptes in toegestaan_gezien.items():
+        R.ok("joint-test", f"contact {a}/{b} tot {max(dieptes):.3f} m toegestaan: {reden}")
     if joints:
         R.ok("joint-test", "geen vervorming mogelijk: alle nodes rigide (schaal 1, geen skinning)"
              if not schaal and not sc.gltf.skins else "controleer schaal/skinning")

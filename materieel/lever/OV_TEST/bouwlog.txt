@@ -1,6 +1,8 @@
 bron: 4 mesh-instanties, 48 driehoeken
 bron-afmetingen [1200.0, 1000.0, 1200.0] eenheden -> [1.2, 1.0, 1.2] m
-verwijderd via patroon: 0, dubbele objecten: 1
+verwijderd via patroon: 0, dubbele objecten: 1, buiten behoud_regio: 0
+  OV_TEST_Voet: 2 stukken, 24 driehoeken
+  OV_TEST_Arm: 1 stukken, 12 driehoeken
 interne geometrie verwijderd: 1
 polygonen: 24 -> 24 (doel 50000)
 geschreven: /home/user/RINKOWK/materieel/lever/OV_TEST/model.glb

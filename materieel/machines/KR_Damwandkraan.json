@@ -580,5 +580,42 @@
       "joint": "KR_Damwandkraan_Giek",
       "factor": -1
     }
-  }
+  },
+  "botsing_toegestaan": [
+    {
+      "paar": [
+        "KR_Damwandkraan_Onderwagen",
+        "KR_Damwandkraan_Leiwiel_L"
+      ],
+      "reden": "wielschijf draait in de rupsketting; de schijven steken in de bron al in de schakels"
+    },
+    {
+      "paar": [
+        "KR_Damwandkraan_Onderwagen",
+        "KR_Damwandkraan_Leiwiel_R"
+      ],
+      "reden": "wielschijf draait in de rupsketting; de schijven steken in de bron al in de schakels"
+    },
+    {
+      "paar": [
+        "KR_Damwandkraan_Onderwagen",
+        "KR_Damwandkraan_Kettingwiel_L"
+      ],
+      "reden": "wielschijf draait in de rupsketting; de schijven steken in de bron al in de schakels"
+    },
+    {
+      "paar": [
+        "KR_Damwandkraan_Onderwagen",
+        "KR_Damwandkraan_Kettingwiel_R"
+      ],
+      "reden": "wielschijf draait in de rupsketting; de schijven steken in de bron al in de schakels"
+    },
+    {
+      "paar": [
+        "KR_Damwandkraan_Bovenwagen",
+        "KR_Damwandkraan_Giektuien"
+      ],
+      "reden": "giektuien zijn star aan de giek bevestigd; bij toppen schuift het A-bok-einde door de bok (bekende beperking, zie openstaande punten)"
+    }
+  ]
 }
