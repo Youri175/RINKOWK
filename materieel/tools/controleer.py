@@ -82,7 +82,7 @@ def zonder_voorvoegsel(naam):
 def voorkant_schatting(sc, wm, namen=("Giek", "Bak", "Stick", "Voorwagen")):
     """Horizontale richting (as + teken) van voorkant-onderdelen t.o.v. het nulpunt."""
     for n in namen:
-        node = sc.node(n)
+        node = sc.node(n) or next((x for x in sc.nodes if zonder_voorvoegsel(x.naam) == n), None)
         if node is None:
             continue
         pts = scene_punten(sc, wm, sc.afstammelingen(node.index))
@@ -325,6 +325,17 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
     if kop and not all(sc.node(kop.get(k, "")) for k in ("stick", "bak", "tuimelaar", "bakstang")):
         kop = None
     kop_nodes = {sc.node(kop[k]).index for k in ("tuimelaar", "bakstang")} if kop else set()
+    # gekoppelde joints, bv. {"KR_x_Takel": {"joint": "KR_x_Giek", "factor": -1}}: last hangt verticaal
+    per_naam = {j["naam"]: j for j in joints}
+    volgt = {k: v for k, v in man.get("volgt", {}).items() if k in per_naam and v.get("joint") in per_naam}
+
+    def stand(j, hoek):
+        """Joint-matrices voor `j` op `hoek`, inclusief joints die hem volgen."""
+        uit = {j["index"]: joint_matrix(j, hoek)}
+        for naam, v in volgt.items():
+            if v["joint"] == j["naam"]:
+                uit[per_naam[naam]["index"]] = joint_matrix(per_naam[naam], hoek * v.get("factor", 1))
+        return uit
 
     # ---------------- manifest ----------------
     sjabloon = ["merk", "typeaanduiding", "machinetype", "bron_url", "licentie", "bronformaat",
@@ -431,7 +442,7 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
         nl, nh = bbox(np_)
         (R.ok if abs(nl[1]) <= TOL_GROND else R.fout)("nulpunt", f"grond van {nul.naam}: Y = {nl[1]:.4f} m")
         mxz = np.array([(nl[0] + nh[0]) / 2, (nl[2] + nh[2]) / 2])
-        (R.ok if np.abs(mxz).max() <= 0.05 else R.fout)(
+        (R.ok if np.abs(mxz).max() <= 0.10 else R.fout)(          # referentie Cat336E: 7,5 cm
             "nulpunt", f"midden {nul.naam} op X,Z = {mxz.round(3).tolist()}")
     if lo[1] < -TOL_GROND:
         R.warn("nulpunt", f"in ruststand ligt geometrie onder maaiveld (Y = {lo[1]:.3f})")
@@ -571,7 +582,7 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
         if stuur and "penafstand_min" in nh.extras:
             afst = []
             for a in np.linspace(stuur["min"], stuur["max"], 25):
-                wmx, _ = wereld_met_cilinders(sc, [], {stuur["index"]: joint_matrix(stuur, a)}, kop)
+                wmx, _ = wereld_met_cilinders(sc, [], stand(stuur, a), kop)
                 afst.append(float(np.linalg.norm(wmx[s][:3, 3] - wmx[h][:3, 3])))
             if min(afst) < nh.extras["penafstand_min"] - TOL_PEN or max(afst) > nh.extras["penafstand_max"] + TOL_PEN:
                 fouten.append(f"penafstand {min(afst):.3f}..{max(afst):.3f} over {stuur['naam']} buiten "
@@ -626,12 +637,16 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
     links = np.cross([0, 1, 0], np.array(ASSEN_VOOR[CONV["doel_voorkant"]]))  # links = up × voor
     for j in joints:
         n = sc.nodes[j["index"]]
+        if n.naam in volgt:
+            R.ok("joint-test", f"{n.naam}: volgt {volgt[n.naam]['joint']} (factor {volgt[n.naam].get('factor', 1)}); "
+                               "getest samen met die joint")
+            continue
         bewegend = set(sc.afstammelingen(n.index))
         rust_pts = scene_punten(sc, wm, list(bewegend))
         rust_c = rust_pts.mean(0) if len(rust_pts) else wm[n.index][:3, 3]
         standen = {}
         for label in ("min", "max"):
-            wmx, extra = wereld_met_cilinders(sc, cilinders, {n.index: joint_matrix(j, j[label])}, kop)
+            wmx, extra = wereld_met_cilinders(sc, cilinders, stand(j, j[label]), kop)
             veranderd = {i for i in range(len(sc.nodes)) if not np.allclose(wmx[i], wm[i], atol=1e-6)}
             bp = scene_punten(sc, wmx, list(bewegend))
             c = bp.mean(0) if len(bp) else wmx[n.index][:3, 3]
@@ -649,13 +664,15 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
                         continue
                     per_paar[(a, b)] = max(per_paar.get((a, b), 0.0), diepte)
                 nieuw += [f"{sc.nodes[a].naam}/{sc.nodes[b].naam} ({d_:.3f} m)" for (a, b), d_ in sorted(per_paar.items())]
-            if len(bp) and bp[:, 1].min() < -TOL_GROND and j["naam"] not in ("Giek", "Stick", "Bak"):
+            if len(bp) and bp[:, 1].min() < -TOL_GROND and zonder_voorvoegsel(j["naam"]) not in ("Giek", "Stick", "Bak"):
                 nieuw.append(f"onder maaiveld (Y={bp[:, 1].min():.2f})")
             standen[label] = {"hoek": j[label], "zwaartepunt": c.round(3).tolist(), "doorsnijding": nieuw}
         kp = scene_punten(sc, sc.wereld_matrices({n.index: joint_matrix(j, 5.0)}), list(bewegend))
         dc = (kp.mean(0) if len(kp) else rust_c) - rust_c
         if n.naam == "Bak":
             teken = j["positief"] or "n.v.t."            # openen is geen hoogte-effect van het zwaartepunt
+        elif "straal_band" in n.extras or "straal_steekcirkel" in n.extras:
+            teken = "n.v.t. (wiel)"
         elif j["as"] == "X":
             teken = "heffen" if dc[1] > 1e-4 else ("zakken" if dc[1] < -1e-4 else "n.v.t. (wiel)")
         elif j["as"] == "Z":
@@ -680,7 +697,7 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
     if animatie and joints:
         stappen, t0 = [], 0.0
         for j in joints:
-            if j["type"] != "rotatie":
+            if j["type"] != "rotatie" or j["naam"] in volgt:
                 continue
             for ta, ha, tb, hb in ((0, 0, 1, j["min"]), (1, j["min"], 3, j["max"]), (3, j["max"], 4, 0)):
                 for k in range(7):
@@ -689,8 +706,9 @@ def controleer(map_, referenties=(), doel_poly=50000, animatie=True):
             t0 += 4.0
         sporen = {}
         for t, j, h in stappen:
-            _, extra = wereld_met_cilinders(sc, cilinders, {j["index"]: joint_matrix(j, h)}, kop)
-            for i in [j["index"]] + sorted(cil_nodes | kop_nodes):
+            st = stand(j, h)
+            _, extra = wereld_met_cilinders(sc, cilinders, st, kop)
+            for i in sorted(set(st) | cil_nodes | kop_nodes):
                 r = sc.nodes[i].matrix[:3, :3] @ extra.get(i, np.eye(4))[:3, :3]
                 sporen.setdefault(i, []).append((t, matrix_naar_quat(r)))
         kanalen = []

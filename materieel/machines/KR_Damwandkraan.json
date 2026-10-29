@@ -1,0 +1,584 @@
+{
+  "_uitleg": "Damwandkraan (vakwerkkraan met trilblok en powerpack) uit een FBX van de gebruiker (SketchUp-oorsprong via Blender 4.2). Bron-coördinaten zijn de Assimp-uitvoer: centimeter, Y-up. De bovenwagen stond 90° gezwenkt; de onderwagen wordt terug in de ruststand gedraaid. Toewijzing per los meshdeel (de bron groepeert per materiaal, niet per onderdeel). Volgorde van 'onderdelen' = volgorde van toewijzing (eerste treffer wint).",
+  "merk": "onbekend",
+  "typeaanduiding": "Damwandkraan (type onbekend)",
+  "machinetype": "hijskraan",
+  "modelcode": "Damwandkraan",
+  "detailniveau": "volledig",
+  "wortel": "KR_Damwandkraan",
+  "categorie": "Heien en funderen",
+  "bron": {
+    "bestand": "../bronnen/Damwandkraan-voorbij.fbx",
+    "url": "",
+    "licentie": "Aangeleverd door de gebruiker (eigen Unity-project); herkomst en herdistributierecht onbekend: alleen aan de gebruiker leveren, niet publiceren",
+    "formaat": "FBX (binair, Blender 4.2; oorspronkelijk SketchUp)"
+  },
+  "bron_eenheid": "cm",
+  "bron_up": "+Y",
+  "bron_voorkant": [
+    -0.9886,
+    0,
+    -0.1507
+  ],
+  "hoekpunt_tolerantie_m": 0.0001,
+  "componenten": true,
+  "dubbelzijdig": true,
+  "behoud_regio": [
+    [
+      [
+        -150.0,
+        150.0,
+        -650.0
+      ],
+      [
+        3150.0,
+        3250.0,
+        850.0
+      ]
+    ]
+  ],
+  "nulpunt_bron": [
+    2614.1,
+    170.0,
+    393.7
+  ],
+  "nulpunt_onderdeel": "KR_Damwandkraan_Onderwagen",
+  "voor_draaiing": [
+    {
+      "onderdelen": [
+        "KR_Damwandkraan_Onderwagen",
+        "KR_Damwandkraan_Kettingwiel_L",
+        "KR_Damwandkraan_Kettingwiel_R",
+        "KR_Damwandkraan_Leiwiel_L",
+        "KR_Damwandkraan_Leiwiel_R"
+      ],
+      "as_bron": "+Y",
+      "hoek_deg": -90,
+      "punt_bron": [
+        2614.1,
+        0.0,
+        393.7
+      ],
+      "reden": "bovenwagen stond 90° gezwenkt; rupsen in de rijrichting van de giek gezet (ruststand)"
+    },
+    {
+      "onderdelen": [
+        "KR_Damwandkraan_Powerpack"
+      ],
+      "verschuiving_m": [
+        0,
+        0.061,
+        0
+      ],
+      "reden": "stond 6 cm onder het maaiveld van de rupsen"
+    },
+    {
+      "onderdelen": [
+        "KR_Damwandkraan_Slangen"
+      ],
+      "verschuiving_m": [
+        0,
+        0.078,
+        0
+      ],
+      "reden": "lagen 8 cm onder het maaiveld van de rupsen"
+    }
+  ],
+  "doel_polygonen": 50000,
+  "onderdelen": [
+    {
+      "naam": "KR_Damwandkraan_Leiwiel_R",
+      "parent": "KR_Damwandkraan_Onderwagen",
+      "lijn": {
+        "a": [
+          2358.4,
+          217.8,
+          598.6
+        ],
+        "b": [
+          2427.6,
+          217.8,
+          609.0
+        ],
+        "straal": 8
+      },
+      "draaipunt": {
+        "bbox": [
+          0,
+          0,
+          0
+        ]
+      },
+      "joint": {
+        "as": "X",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "machine rijdt achteruit"
+      },
+      "wiel": {
+        "straal_band": "auto",
+        "straal_steekcirkel": 0.4
+      },
+      "extras": {
+        "ao_groep": "onderwagen"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Kettingwiel_R",
+      "parent": "KR_Damwandkraan_Onderwagen",
+      "lijn": {
+        "a": [
+          2432.2,
+          218.0,
+          109.6
+        ],
+        "b": [
+          2501.4,
+          218.0,
+          120.0
+        ],
+        "straal": 8
+      },
+      "draaipunt": {
+        "bbox": [
+          0,
+          0,
+          0
+        ]
+      },
+      "joint": {
+        "as": "X",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "machine rijdt achteruit"
+      },
+      "wiel": {
+        "straal_band": "auto",
+        "straal_steekcirkel": 0.4
+      },
+      "extras": {
+        "ao_groep": "onderwagen"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Leiwiel_L",
+      "parent": "KR_Damwandkraan_Onderwagen",
+      "lijn": {
+        "a": [
+          2729.7,
+          218.0,
+          654.8
+        ],
+        "b": [
+          2798.9,
+          218.0,
+          665.2
+        ],
+        "straal": 8
+      },
+      "draaipunt": {
+        "bbox": [
+          0,
+          0,
+          0
+        ]
+      },
+      "joint": {
+        "as": "X",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "machine rijdt achteruit"
+      },
+      "wiel": {
+        "straal_band": "auto",
+        "straal_steekcirkel": 0.4
+      },
+      "extras": {
+        "ao_groep": "onderwagen"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Kettingwiel_L",
+      "parent": "KR_Damwandkraan_Onderwagen",
+      "lijn": {
+        "a": [
+          2803.4,
+          219.0,
+          165.8
+        ],
+        "b": [
+          2872.6,
+          219.0,
+          176.2
+        ],
+        "straal": 8
+      },
+      "draaipunt": {
+        "bbox": [
+          0,
+          0,
+          0
+        ]
+      },
+      "joint": {
+        "as": "X",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "machine rijdt achteruit"
+      },
+      "wiel": {
+        "straal_band": "auto",
+        "straal_steekcirkel": 0.4
+      },
+      "extras": {
+        "ao_groep": "onderwagen"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Onderwagen",
+      "regio": [
+        [
+          [
+            2200.0,
+            160.0,
+            -30.0
+          ],
+          [
+            3050.0,
+            290.0,
+            800.0
+          ]
+        ]
+      ],
+      "extras": {
+        "ao_groep": "onderwagen",
+        "functie": "Rupsen, rupsframes en draaikrans (vast)"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Powerpack",
+      "regio": [
+        [
+          [
+            2580.0,
+            150.0,
+            -560.0
+          ],
+          [
+            3000.0,
+            420.0,
+            -320.0
+          ]
+        ]
+      ],
+      "extras": {
+        "ao_groep": "",
+        "functie": "Hydraulisch aggregaat voor het trilblok (los op de grond, staat niet op de kraan)"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Slangen",
+      "bron": [
+        "Object\\.008"
+      ],
+      "extras": {
+        "ao_groep": "",
+        "functie": "Hydraulische slangen trilblok - powerpack (statisch)"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Trilblok",
+      "parent": "KR_Damwandkraan_Takel",
+      "regio": [
+        [
+          [
+            -100.0,
+            900.0,
+            -120.0
+          ],
+          [
+            130.0,
+            1290.0,
+            70.0
+          ]
+        ]
+      ],
+      "extras": {
+        "ao_groep": "",
+        "functie": "Trilblok met klem (hangt aan de takel)"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Takel",
+      "parent": "KR_Damwandkraan_Giek",
+      "lijn": {
+        "a": [
+          25.0,
+          3090.0,
+          0.0
+        ],
+        "b": [
+          14.0,
+          1260.0,
+          -19.0
+        ],
+        "straal": 35
+      },
+      "draaipunt": {
+        "bron": [
+          49.0,
+          3146.0,
+          4.0
+        ]
+      },
+      "joint": {
+        "as": "X",
+        "min": -30,
+        "max": 15,
+        "bron": "geschat",
+        "positief": "naar voren zwaaien"
+      },
+      "extras": {
+        "ao_groep": "",
+        "functie": "Takelkabel met trilblok; hangt aan de giekkopschijf. Volgt de giekhoek tegengesteld (Takel = -Giek), zodat het trilblok verticaal blijft"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Giek",
+      "parent": "KR_Damwandkraan_Bovenwagen",
+      "draaipunt": {
+        "bron": [
+          2450.0,
+          325.0,
+          370.0
+        ]
+      },
+      "lijn": [
+        {
+          "a": [
+            2347.0,
+            446.5,
+            354.3
+          ],
+          "b": [
+            16.4,
+            3195.5,
+            -0.9
+          ],
+          "straal": 105
+        }
+      ],
+      "joint": {
+        "as": "X",
+        "min": -15,
+        "max": 30,
+        "bron": "geschat",
+        "positief": "heffen"
+      },
+      "extras": {
+        "ao_groep": "giek",
+        "functie": "Vakwerkgiek met kop en schijven; topt om de giekvoetpen"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Giektuien",
+      "parent": "KR_Damwandkraan_Giek",
+      "lijn": [
+        {
+          "a": [
+            2700.0,
+            766.0,
+            406.0
+          ],
+          "b": [
+            130.0,
+            3156.0,
+            17.0
+          ],
+          "straal": 120
+        },
+        {
+          "a": [
+            2791.0,
+            352.0,
+            423.0
+          ],
+          "b": [
+            108.0,
+            3168.0,
+            11.0
+          ],
+          "straal": 60
+        }
+      ],
+      "extras": {
+        "ao_groep": "",
+        "functie": "Giektuien en hijskabel naar de kop; star aan de giek (lengte verandert in werkelijkheid bij toppen)"
+      }
+    },
+    {
+      "naam": "KR_Damwandkraan_Bovenwagen",
+      "draaipunt": [
+        0,
+        0,
+        0
+      ],
+      "regio": [
+        [
+          [
+            2050.0,
+            290.0,
+            -50.0
+          ],
+          [
+            3150.0,
+            950.0,
+            850.0
+          ]
+        ]
+      ],
+      "joint": {
+        "as": "Z",
+        "min": -180,
+        "max": 180,
+        "bron": "geschat",
+        "positief": "naar links"
+      },
+      "extras": {
+        "ao_groep": "boven",
+        "functie": "Bovenwagen met cabine, A-bok, lieren en contragewicht; zwenkt om lokale Z (Godot: Y) door de oorsprong"
+      }
+    }
+  ],
+  "standaard_onderdeel": "KR_Damwandkraan_Bovenwagen",
+  "polygonen_per_onderdeel": {
+    "KR_Damwandkraan_Onderwagen": 8000,
+    "KR_Damwandkraan_Kettingwiel_L": 500,
+    "KR_Damwandkraan_Kettingwiel_R": 500,
+    "KR_Damwandkraan_Leiwiel_L": 500,
+    "KR_Damwandkraan_Leiwiel_R": 500,
+    "KR_Damwandkraan_Trilblok": 6000,
+    "KR_Damwandkraan_Slangen": 1500,
+    "KR_Damwandkraan_Powerpack": 2500,
+    "KR_Damwandkraan_Bovenwagen": 15000
+  },
+  "behoud": [
+    "KR_Damwandkraan_Giek"
+  ],
+  "materialen": [
+    {
+      "patroon": "^Voorbij",
+      "kleur": [
+        0.82,
+        0.82,
+        0.8,
+        1.0
+      ],
+      "roughness": 0.55,
+      "naam": "Kraan_Lak"
+    },
+    {
+      "patroon": "^(F271E5DE|C414FB7E)",
+      "kleur": [
+        0.81,
+        0.33,
+        0.02,
+        1.0
+      ],
+      "roughness": 0.5,
+      "naam": "Trilblok_Oranje"
+    },
+    {
+      "patroon": "^(803331F2|7C3EFDDA|Material\\.009|A8EE2A66|1F927522)",
+      "kleur": [
+        0.03,
+        0.03,
+        0.03,
+        1.0
+      ],
+      "roughness": 0.85,
+      "naam": "Rubber_Zwart"
+    },
+    {
+      "patroon": "^1A0F92AA",
+      "kleur": [
+        0.2,
+        0.2,
+        0.2,
+        1.0
+      ],
+      "metallic": 0.6,
+      "roughness": 0.7,
+      "naam": "Rups_Staal"
+    },
+    {
+      "patroon": "^(38B8DF60|70B2F183)",
+      "kleur": [
+        0.33,
+        0.33,
+        0.33,
+        1.0
+      ],
+      "metallic": 0.5,
+      "roughness": 0.65,
+      "naam": "Onderwagen_Staal"
+    },
+    {
+      "patroon": "^(6A4F2B12|B5FB3C30)",
+      "kleur": [
+        0.42,
+        0.42,
+        0.42,
+        1.0
+      ],
+      "metallic": 0.8,
+      "roughness": 0.4,
+      "naam": "Staalkabel"
+    },
+    {
+      "patroon": "^(043989F4|28EA312C|E256EDAD|219AA2AC|FCC82695)",
+      "kleur": [
+        0.55,
+        0.56,
+        0.58,
+        1.0
+      ],
+      "metallic": 0.5,
+      "roughness": 0.5,
+      "naam": "Machine_Staal"
+    }
+  ],
+  "aannames": [
+    "Objectschaal (1, 1, 9,57) uit de FBX overgenomen: alleen zo kloppen de verhoudingen (rupsen 5,9 m, hoogte rups 1,1 m, giek 37 m)",
+    "Zwenkas = hart van de draaikrans; giekvoetpen en kopschijf bepaald uit de geometrie",
+    "Ontbrekende textures (Windows-tijdmappen en 'voorbij logo.png') vervangen door effen PBR-materialen",
+    "Hijskraan heeft geen rig in 4DVis: alle onderdelen volgen [TYPE]_[MODEL]_[ONDERDEEL], ook bovenwagen, giek en wielen",
+    "Kettingwiel/leiwiel: straal_steekcirkel 0,40 m geschat (schijfdiameter 0,85 m)"
+  ],
+  "openstaande_punten": [
+    "Exact merk en type onbekend: maten niet getoetst aan een datasheet",
+    "Textures ontbreken in de aanlevering (o.a. 'voorbij logo.png'); aanleveren als bestanden om ze naast het GLB mee te leveren",
+    "Hijskraan: geen rig in 4DVis. Keten en joints staan in het model en het manifest",
+    "Takel moet in 4DVis tegengesteld aan de Giek draaien om het trilblok verticaal te houden; kabellengte (zakken/heffen trilblok) niet als joint uitgevoerd",
+    "Giektuien, hijskabel en slangen zijn star; hun lengte past zich niet aan bij toppen, zwenken of verplaatsen van het trilblok",
+    "Herkomst en licentie van het model onbekend (materiaalnamen wijzen op SketchUp 3D Warehouse): niet in de publieke repo opgenomen"
+  ],
+  "voorbeeldstanden": {
+    "getopt": {
+      "KR_Damwandkraan_Giek": 25
+    },
+    "gezwenkt": {
+      "KR_Damwandkraan_Bovenwagen": 60
+    }
+  },
+  "volgt": {
+    "KR_Damwandkraan_Takel": {
+      "joint": "KR_Damwandkraan_Giek",
+      "factor": -1
+    }
+  }
+}

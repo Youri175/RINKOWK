@@ -16,8 +16,10 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 
 import numpy as np
 import trimesh
@@ -36,8 +38,12 @@ ASSEN = {"+X": (1, 0, 0), "-X": (-1, 0, 0), "+Y": (0, 1, 0), "-Y": (0, -1, 0),
 
 
 def asrotatie(bron_up, bron_voor, doel_up="+Y", doel_voor="+Z"):
-    """Rotatiematrix die bron-up/voorkant op doel-up/voorkant legt."""
-    bu, bv = np.array(ASSEN[bron_up], float), np.array(ASSEN[bron_voor], float)
+    """Rotatiematrix die bron-up/voorkant op doel-up/voorkant legt. `bron_voor` mag ook een
+    vector zijn (bv. de giekrichting van een gezwenkt model); die wordt loodrecht op up gemaakt."""
+    bu = np.array(ASSEN[bron_up], float)
+    bv = np.array(ASSEN[bron_voor] if isinstance(bron_voor, str) else bron_voor, float)
+    bv = bv - (bv @ bu) * bu
+    bv /= np.linalg.norm(bv)
     du, dv = np.array(ASSEN[doel_up], float), np.array(ASSEN[doel_voor], float)
     if abs(bu @ bv) > 1e-9 or abs(du @ dv) > 1e-9:
         raise ValueError("up en voorkant moeten loodrecht op elkaar staan")
@@ -60,10 +66,20 @@ class Log:
 # --------------------------------------------------------------------------
 def laad_bron(pad, log):
     ext = os.path.splitext(pad)[1].lower()
-    if ext in (".fbx", ".blend", ".dae", ".3ds"):
-        raise RuntimeError(
-            f"{ext} kan zonder Blender niet gelezen worden; converteer eerst met "
-            "`blender -b -P tools/blender_naar_glb.py -- bron.fbx bron.glb` en gebruik het GLB.")
+    if ext in (".fbx", ".dae", ".3ds"):
+        if not shutil.which("assimp"):
+            raise RuntimeError(
+                f"{ext} vraagt Assimp (apt install assimp-utils) of Blender: "
+                "`blender -b -P tools/blender_naar_glb.py -- bron.fbx bron.glb`")
+        tmp = os.path.join(tempfile.mkdtemp(prefix="bron_"), "bron.glb")
+        r = subprocess.run(["assimp", "export", pad, tmp, "-fglb2"], capture_output=True, text=True)
+        if r.returncode != 0 or not os.path.exists(tmp):
+            raise RuntimeError(f"Assimp kon {os.path.basename(pad)} niet omzetten: {r.stderr[-300:]}")
+        log.info(f"{ext} via Assimp omgezet naar glTF (Y-up; FBX-eenheid blijft in de nodeschaal)")
+        log.afwijkingen.append(f"bron {ext.upper()[1:]} via Assimp naar glTF omgezet; punten en lijnen vervallen")
+        pad = tmp
+    elif ext == ".blend":
+        raise RuntimeError("`blender -b -P tools/blender_naar_glb.py -- bron.blend bron.glb` en gebruik het GLB")
     sc = trimesh.load(pad, force="scene", process=False)
     parents = sc.graph.transforms.parents
 
@@ -143,11 +159,15 @@ class Materialen:
         return self._voeg(k, maker=maak)
 
 
-def splits_op_materiaal(mesh, mats):
-    """Geeft [(trimesh, materiaal_idx, heeft_uv)]."""
+def splits_op_materiaal(mesh, mats, vervang=()):
+    """Geeft [(trimesh, materiaal_idx, heeft_uv)]. `vervang`: [(regex, spec)] op de bronmateriaalnaam."""
     vis = mesh.visual
     if isinstance(vis, trimesh.visual.TextureVisuals):
         m = vis.material
+        for pat, spec in vervang:
+            if m is not None and pat.search(str(getattr(m, "name", "") or "")):
+                return [(mesh, mats.kleur(spec["kleur"], spec.get("metallic", 0.0), spec.get("roughness", 0.8),
+                                          spec.get("naam")), False)]
         rgba, met, rou, beeld = (0.8, 0.8, 0.8, 1.0), 0.0, 0.8, None
         if isinstance(m, trimesh.visual.material.PBRMaterial):
             if m.baseColorFactor is not None:
@@ -182,15 +202,38 @@ def splits_op_materiaal(mesh, mats):
 # --------------------------------------------------------------------------
 # Opschonen (stap 4)
 # --------------------------------------------------------------------------
-def schoon_mesh(m, heeft_uv):
+def schoon_mesh(m, heeft_uv, cijfers=None):
+    """Ontaarde en dubbele vlakken weg (ook de achterkant van dubbelzijdige SketchUp-vlakken),
+    hoekpunten samenvoegen (optioneel binnen 10^-cijfers m) en de winding consistent maken."""
     m = m.copy()
+    m.merge_vertices(merge_tex=heeft_uv, merge_norm=True, digits_vertex=cijfers)
     m.update_faces(m.nondegenerate_faces())
     m.update_faces(m.unique_faces())
     m.remove_unreferenced_vertices()
-    m.merge_vertices(merge_tex=False, merge_norm=True)
-    if not heeft_uv and m.is_watertight:
-        trimesh.repair.fix_normals(m)       # consistente winding, naar buiten
+    if not heeft_uv:
+        if m.is_watertight:
+            trimesh.repair.fix_normals(m)   # consistente winding, naar buiten
+        elif cijfers is not None:
+            trimesh.repair.fix_winding(m)   # open schalen: in elk geval onderling consistent
     return m
+
+
+def splits_hoekpunten(m, cijfers):
+    """Losse stukken op gedeelde hoekpunten (binnen 10^-cijfers m). Robuuster dan trimesh.split
+    bij dubbelzijdige vlakken, waar randen door vier vlakken gedeeld worden."""
+    from scipy.sparse import coo_matrix
+    from scipy.sparse.csgraph import connected_components
+    _, inv = np.unique(np.round(m.vertices, cijfers), axis=0, return_inverse=True)
+    f = inv.reshape(-1)[m.faces]
+    e = np.vstack([f[:, [0, 1]], f[:, [1, 2]]])
+    n = int(inv.max()) + 1
+    k, lab = connected_components(coo_matrix((np.ones(len(e)), (e[:, 0], e[:, 1])), shape=(n, n)), directed=False)
+    if k == 1:
+        return [m]
+    flab = lab[f[:, 0]]
+    volg = np.argsort(flab, kind="stable")
+    grenzen = np.flatnonzero(np.diff(flab[volg])) + 1
+    return [m.submesh([idx], append=True) for idx in np.split(volg, grenzen)]
 
 
 def is_intern(klein, groot):
@@ -205,13 +248,45 @@ def is_intern(klein, groot):
     return bool(np.all(groot.contains(pts)))
 
 
+def cluster(pos, faces, cel):
+    """Vertex-clustering: hoekpunten per rastercel samenvoegen, ontaarde/dubbele vlakken weg."""
+    sleutel = np.floor(pos / cel).astype(np.int64)
+    _, inv = np.unique(sleutel, axis=0, return_inverse=True)
+    inv = inv.reshape(-1)
+    n = inv.max() + 1
+    nieuw = np.zeros((n, 3))
+    np.add.at(nieuw, inv, pos)
+    nieuw /= np.bincount(inv, minlength=n)[:, None]
+    f = inv[faces]
+    f = f[(f[:, 0] != f[:, 1]) & (f[:, 1] != f[:, 2]) & (f[:, 0] != f[:, 2])]
+    f = f[np.unique(np.sort(f, axis=1), axis=0, return_index=True)[1]]
+    gebruikt = np.unique(f)
+    remap = np.full(n, -1)
+    remap[gebruikt] = np.arange(len(gebruikt))
+    return nieuw[gebruikt], remap[f]
+
+
 def decimeer(pos, faces, doel):
+    """Quadric-decimatie; schiet die tekort (veel kleine losse stukjes, zoals rupsschakels),
+    dan vertex-clustering met de kleinste celgrootte die het doel haalt."""
     if len(faces) <= doel or doel < 4:
         return pos, faces
     import fast_simplification
     red = 1.0 - doel / len(faces)
     p, f = fast_simplification.simplify(pos.astype(np.float32), faces.astype(np.int64), red)
-    return np.asarray(p, float), np.asarray(f, np.int64)
+    p, f = np.asarray(p, float), np.asarray(f, np.int64)
+    if len(f) <= doel * 1.15:
+        return p, f
+    lo, hi = 1e-3, float(np.ptp(pos, axis=0).max()) / 4
+    beste = None
+    for _ in range(18):                      # bisectie op de celgrootte
+        cel = np.sqrt(lo * hi)
+        pc, fc = cluster(p, f, cel)
+        if len(fc) > doel:
+            lo = cel
+        else:
+            hi, beste = cel, (pc, fc)
+    return beste if beste is not None else cluster(p, f, hi)
 
 
 def vertex_normalen(pos, faces, hoek_deg=30.0):
@@ -219,9 +294,25 @@ def vertex_normalen(pos, faces, hoek_deg=30.0):
     m = trimesh.Trimesh(pos, faces, process=False)
     try:
         gl = trimesh.graph.smooth_shade(m, angle=np.radians(hoek_deg))
-        return np.asarray(gl.vertices), np.asarray(gl.faces), np.asarray(gl.vertex_normals)
+        v, f, n = np.asarray(gl.vertices), np.asarray(gl.faces), np.asarray(gl.vertex_normals)
     except Exception:
-        return pos, faces, np.asarray(m.vertex_normals)
+        v, f, n = pos, faces, np.asarray(m.vertex_normals)
+    # bijna samenvallende tegengestelde vlakken (dubbelzijdige bron) middelen tot nul of tot een
+    # omgekeerde normaal: die hoeken krijgen de eigen vlaknormaal
+    fn = np.cross(v[f[:, 1]] - v[f[:, 0]], v[f[:, 2]] - v[f[:, 0]])
+    lengte = np.linalg.norm(fn, axis=1)
+    fn = np.where(lengte[:, None] > 1e-12, fn / np.maximum(lengte, 1e-12)[:, None], [0, 1, 0])
+    nl = np.linalg.norm(n, axis=1)
+    slecht = (nl[f] < 1e-6) | (np.einsum("fkj,fj->fk", n[f], fn) < 0.2)
+    if slecht.any():
+        rijen, kol = np.nonzero(slecht)
+        nieuw = len(v) + np.arange(len(rijen))
+        v = np.vstack([v, v[f[rijen, kol]]])
+        n = np.vstack([n, fn[rijen]])
+        f = f.copy()
+        f[rijen, kol] = nieuw
+    n = n / np.maximum(np.linalg.norm(n, axis=1), 1e-12)[:, None]
+    return v, f, n
 
 
 # --------------------------------------------------------------------------
@@ -295,8 +386,37 @@ def bouw(cfg_pad, uitmap, controle=True):
     def naar_doel(p):
         return (np.asarray(p, float) * f_eenh) @ R.T
 
+    def naar_bron(p):
+        return (np.asarray(p, float) @ R) / f_eenh
+
+    def regels(o):
+        """Ruimtelijke toewijzing in bron-coördinaten: kaders (regio) en zones langs een lijn."""
+        uit = []
+        for k in o.get("regio", []):
+            uit.append(("kader", np.array(k[0], float), np.array(k[1], float)))
+        lijnen = o.get("lijn", [])
+        for k in [lijnen] if isinstance(lijnen, dict) else lijnen:
+            uit.append(("lijn", np.array(k["a"], float), np.array(k["b"], float), float(k["straal"])))
+        return uit
+
+    def binnen(c, rgl):
+        for r in rgl:
+            if r[0] == "kader" and np.all(c >= np.minimum(r[1], r[2])) and np.all(c <= np.maximum(r[1], r[2])):
+                return True
+            if r[0] == "lijn":
+                ab = r[2] - r[1]
+                t = np.clip((c - r[1]) @ ab / (ab @ ab), 0, 1)
+                if np.linalg.norm(c - (r[1] + t * ab)) <= r[3]:
+                    return True
+        return False
+
+    ruimte = {o["naam"]: regels(o) for o in onderdelen}
+    behoud_regio = regels({"regio": cfg["behoud_regio"]}) if cfg.get("behoud_regio") else None
+
+    tol = cfg.get("hoekpunt_tolerantie_m")          # bv. 1e-4 bij afrondingsruis in de bron
+    cijfers = int(round(-np.log10(tol))) if tol else 6
     toewijzing = {n: [] for n in namen}
-    weg, dubbel, hashes = [], 0, set()
+    weg, dubbel, hashes, buiten = [], 0, set(), 0
     for it in items:
         if any(p.search(it["pad"]) for p in verwijder):
             weg.append(it["pad"])
@@ -306,18 +426,51 @@ def bouw(cfg_pad, uitmap, controle=True):
         m.vertices = naar_doel(m.vertices)
         if np.linalg.det(it["T"][:3, :3]) < 0:
             m.invert()                       # gespiegelde instantie: winding herstellen
-        h = hashlib.sha1(np.round(np.sort(m.vertices, axis=0), 3).tobytes()).hexdigest()
-        if h in hashes:
-            dubbel += 1
+        stukken = [m]
+        if cfg.get("componenten"):           # bv. SketchUp: objecten per materiaal, niet per onderdeel
+            stukken = splits_hoekpunten(m, cijfers)
+        for st in stukken:
+            h = hashlib.sha1(np.round(np.sort(st.vertices, axis=0), 3).tobytes()).hexdigest()
+            if h in hashes:
+                dubbel += 1
+                continue
+            hashes.add(h)
+            c_bron = naar_bron(st.bounds.mean(0))
+            if behoud_regio is not None and not binnen(c_bron, behoud_regio):
+                buiten += 1
+                continue
+            doel = standaard
+            for naam, pats in patronen:
+                rgl = ruimte[naam]
+                if not pats and not rgl:
+                    continue
+                if (not pats or any(p.search(it["pad"]) for p in pats)) and (not rgl or binnen(c_bron, rgl)):
+                    doel = naam
+                    break
+            toewijzing[doel].append(st)
+    log.info(f"verwijderd via patroon: {len(weg)}, dubbele objecten: {dubbel}, buiten behoud_regio: {buiten}")
+    for n in namen:
+        log.info(f"  {n}: {len(toewijzing[n])} stukken, {sum(len(x.faces) for x in toewijzing[n])} driehoeken")
+
+    # voor-draaiing: bv. een gezwenkte bovenwagen terug in de ruststand (om een as door een bron-punt)
+    for vd in cfg.get("voor_draaiing", []):
+        if "verschuiving_m" in vd:           # bv. delen die onder het maaiveld van de rupsen liggen
+            T = np.eye(4)
+            T[:3, 3] = vd["verschuiving_m"]
+            for n in vd["onderdelen"]:
+                for st in toewijzing[n]:
+                    st.apply_transform(T)
+            log.afwijkingen.append(f"{', '.join(vd['onderdelen'])} {vd['verschuiving_m']} m verschoven: "
+                                   f"{vd.get('reden', '')}".rstrip(": "))
             continue
-        hashes.add(h)
-        doel = standaard
-        for naam, pats in patronen:
-            if any(p.search(it["pad"]) for p in pats):
-                doel = naam
-                break
-        toewijzing[doel].append(m)
-    log.info(f"verwijderd via patroon: {len(weg)}, dubbele objecten: {dubbel}")
+        punt = naar_doel(np.array([vd["punt_bron"]], float))[0]
+        as_d = np.array(ASSEN[vd["as_bron"]], float) @ R.T
+        T = rotatie_matrix(as_d, vd["hoek_deg"], punt)
+        for n in vd["onderdelen"]:
+            for st in toewijzing[n]:
+                st.apply_transform(T)
+        log.afwijkingen.append(f"{', '.join(vd['onderdelen'])} {vd['hoek_deg']}° gedraaid om bron-as "
+                               f"{vd['as_bron']} door {vd['punt_bron']}: {vd.get('reden', '')}".rstrip(": "))
 
     if cfg.get("verwijder_intern", False):
         alle = [(n, i, m) for n, ms in toewijzing.items() for i, m in enumerate(ms)]
@@ -333,14 +486,19 @@ def bouw(cfg_pad, uitmap, controle=True):
 
     # opschonen en per materiaal groeperen
     mats = Materialen(code, os.path.join(doelmap, "textures"))
+    vervang = [(re.compile(v["patroon"], re.I), v) for v in cfg.get("materialen", [])]
     prims = {n: [] for n in namen}
     for n, ms in toewijzing.items():
+        groepen = {}                         # per (materiaal, uv) samenvoegen: minder primitieven
         for m in ms:
-            for sub, mi, uv in splits_op_materiaal(m, mats):
-                sub = schoon_mesh(sub, uv)
-                if len(sub.faces):
-                    prims[n].append([np.asarray(sub.vertices, float), np.asarray(sub.faces),
-                                     np.asarray(sub.visual.uv, float) if uv else None, mi, sub])
+            for sub, mi, uv in splits_op_materiaal(m, mats, vervang):
+                groepen.setdefault((mi, uv), []).append(sub)
+        for (mi, uv), subs in groepen.items():
+            sub = schoon_mesh(trimesh.util.concatenate(subs) if len(subs) > 1 else subs[0], uv,
+                              cijfers if tol else None)
+            if len(sub.faces):
+                prims[n].append([np.asarray(sub.vertices, float), np.asarray(sub.faces),
+                                 np.asarray(sub.visual.uv, float) if uv else None, mi, sub])
     leeg = [n for n in namen if not prims[n]]
     if leeg:
         log.open.append(f"onderdelen zonder geometrie: {leeg}")
@@ -353,6 +511,8 @@ def bouw(cfg_pad, uitmap, controle=True):
     nulpunt = np.array([(lo[0] + hi[0]) / 2, lo[1], (lo[2] + hi[2]) / 2])
     if "nulpunt_m" in cfg:                  # bv. knikas van een knikdumper
         nulpunt = np.array(cfg["nulpunt_m"], float)
+    if "nulpunt_bron" in cfg:               # bv. hart draaikrans op de grond, in bron-coördinaten
+        nulpunt = naar_doel(np.array([cfg["nulpunt_bron"]], float))[0]
     if np.linalg.norm(nulpunt) > 0.01:
         log.afwijkingen.append(f"midden onderwagen op de grond lag in de bron op "
                                f"{np.round(nulpunt, 3).tolist()} m (na eenheid/as-conversie): naar 0 verschoven")
@@ -369,6 +529,18 @@ def bouw(cfg_pad, uitmap, controle=True):
     # decimeren (stap 4)
     doel_poly = int(cfg.get("doel_polygonen", 50000))
     behoud = set(cfg.get("behoud", []))
+    begin = sum(len(p[1]) for n in namen for p in prims[n])
+    for n, budget in cfg.get("polygonen_per_onderdeel", {}).items():
+        tot_n = sum(len(p[1]) for p in prims[n])
+        if tot_n > budget:
+            r = budget / tot_n
+            for p in prims[n]:
+                if p[2] is None:
+                    p[0], p[1] = decimeer(p[0], p[1], max(12, int(len(p[1]) * r)))
+        behoud.add(n)                        # niet nog eens verlagen
+    if cfg.get("polygonen_per_onderdeel"):
+        log.aannames.append("polygoonbudget per onderdeel: " + ", ".join(
+            f"{k} {v}" for k, v in cfg["polygonen_per_onderdeel"].items()))
     totaal = sum(len(p[1]) for n in namen for p in prims[n])
     if totaal > doel_poly:
         b_tot = sum(len(p[1]) for n in namen if n in behoud for p in prims[n])
@@ -393,7 +565,7 @@ def bouw(cfg_pad, uitmap, controle=True):
             log.open.append(f"{overgeslagen_uv} getextureerde primitieven niet gedecimeerd (UV's)")
         log.aannames.append("polygonen verlaagd met uniforme factor per niet-behouden onderdeel; "
                             "geen zichtbaarheidsanalyse")
-    log.info(f"polygonen: {totaal} -> {sum(len(p[1]) for n in namen for p in prims[n])} (doel {doel_poly})")
+    log.info(f"polygonen: {begin} -> {sum(len(p[1]) for n in namen for p in prims[n])} (doel {doel_poly})")
 
     # draaipunten en hiërarchie
     wortel = cfg.get("wortel", code)
@@ -531,6 +703,10 @@ def bouw(cfg_pad, uitmap, controle=True):
     na = sum(len(p[3]) for d in delen for p in d.primitieven)
     delen[0].extras["driehoeken"] = int(na)
     glb = os.path.join(doelmap, "model.glb")
+    if cfg.get("dubbelzijdig"):             # open schalen uit SketchUp/Revit: van twee kanten zichtbaar
+        for m_ in mats.lijst:
+            m_.dubbelzijdig = True
+        log.aannames.append("materialen dubbelzijdig: de bron bestaat uit open, dubbelzijdige vlakken")
     schrijf_glb(glb, delen, mats.lijst)
     log.info(f"geschreven: {glb}")
 
@@ -592,6 +768,7 @@ def bouw(cfg_pad, uitmap, controle=True):
         "cilinders": cilinders,
         "textures": mats.texture_bestanden,
         "gebouwd": datetime.date.today().isoformat(),
+        **({"volgt": cfg["volgt"]} if cfg.get("volgt") else {}),
         **cfg.get("manifest_extra", {}),
     }
     if rignamen - set(namen) and rig:

@@ -79,6 +79,9 @@ def render(map_, standen, uit, titel=None):
         man = json.load(f)
     joints = {j["naam"]: j for j in lees_joints(sc, man)}
     extra = {joints[k]["index"]: joint_matrix(joints[k], v) for k, v in standen.items()}
+    for naam, v in man.get("volgt", {}).items():      # gekoppelde joints volgen, tenzij expliciet gegeven
+        if naam in joints and naam not in standen and v.get("joint") in standen:
+            extra[joints[naam]["index"]] = joint_matrix(joints[naam], standen[v["joint"]] * v.get("factor", 1))
     kop = man.get("koppeling") if man.get("koppeling") and sc.node(man["koppeling"].get("tuimelaar", "")) else None
     wm, _ = wereld_met_cilinders(sc, lees_cilinders(sc), extra, kop)
     tri, kl = driehoeken(sc, wm)
